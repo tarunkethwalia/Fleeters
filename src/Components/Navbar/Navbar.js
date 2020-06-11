@@ -7,7 +7,7 @@ class Navbar extends Component {
         return (
             <div className="Navbar">
                 <h4>Fleeters</h4>
-                <a className="waves-effect waves-light" href="/">Logout</a>
+                <Link className="waves-effect waves-light" to="/">Logout</Link>
             </div>
         )
     }
