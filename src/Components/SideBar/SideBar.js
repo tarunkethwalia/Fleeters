@@ -5,7 +5,12 @@ class SideBar extends Component {
     render() {
         return (
             <div className="SideBar">
-                Sidebar
+                <div className="SideBar-Content">
+                    <a className="active" href="/">Placement</a>
+                    <a href="/">Demand</a>
+                    <a href="/">Operation</a>
+                    <a href="/">Transit</a>
+                </div>
             </div>
         )
     }
