@@ -1,25 +1,25 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-const laneSchema = new schema({
+const laneSchema = {
     StartPoint: String,
     EndPoint: String,
     Distance: String
-});
+};
 
-const addressSchema = new schema({
-    LoadingAddress:[{Address:String,POC:[{Name:String,PhoneNo:Number}]}],
-    UnLoadingAddress:[{Address:String,POC:[{Name:String,PhoneNo:Number}]}]
-    }
-);
+const addressSchema = {
+    LoadingAddress: [{Address: String, POC: [{Name: String, PhoneNo: [Number]}]}],
+    UnLoadingAddress: [{Address: String, POC: [{Name: String, PhoneNo: [Number]}]}]
+}
 
-const vehicleSchema = new schema({
-    vehicleType: {enum:['Open','Container','Trailer']},
+
+const vehicleSchema = {
+    vehicleType:String,
     Tyres: Number,
     Height: Number,
     HQ: {type: Boolean, default: false},
-    TruckType:{ enum :['MXL', 'SXL', 'TXL']}
-});
+    TruckType:{type:String,default:"Not Applicable"}
+};
 
 
 const timeSchema = new schema({
@@ -36,14 +36,14 @@ const freightSchema =new schema({
 });
 
 const demandModel = new schema({
-    Consigner:{Name:String,Type:String,PhoneNo:[Number]},
-    demandStatus: {enum:['Active', 'Completed', 'Rejected','Pending']},  //active or completed or unactive-[rejected,pending or on hold]
+    Consigner: {Name: String, Type: String, PhoneNo: [Number] ,Address:[Number]},
+    demandStatus: {type: String, default: "Active"},
     Lane: laneSchema,
     Address: addressSchema,
-    Item: {Commodity:String, Tonnage:Number},
+    Item: {Commodity: String, Tonnage: Number},
     Time: timeSchema,
     Vehicle: vehicleSchema,
     Freight: freightSchema
 });
 
-module.exports = mongoose.model('Demands',demandModel);
+module.exports = mongoose.model('Demands', demandModel);
