@@ -1,4 +1,4 @@
-.Navbar {width: 100%; height: 60px; background-image: linear-gradient(to bottom, #212121, #5A5A5A); display: flex; justify-content: space-between; align-items: center; padding: 0 20px;}
+.Navbar {width: 100%; height: 60px; background-image: linear-gradient(to bottom, #212121, #5A5A5A); display: flex; justify-content: space-between; align-items: center; padding: 0 20px; position: fixed; z-index: 20;}
 .Navbar h4 {margin: 0; color: white;}
 .Navbar a {border: 1px solid #fff; color: white; padding: 5px 10px; border-radius: 5px;}
 .Navbar a:hover {background-color: #0a97b0; border: 1px solid #0a97b0;}
