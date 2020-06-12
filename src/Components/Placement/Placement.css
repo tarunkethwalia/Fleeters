@@ -1,20 +1,26 @@
 .content {width: 100%; position: fixed; height: 100%; display: flex; align-items: flex-end;}
 .sidebarContent{height:100%; width: 15%;}
-.placementContent {overflow-y: auto; height:100%; width: 85%;display: flex; flex-direction: column;}
-.placementContent p{height: 15%; font-size: 30px; color: black; padding: 70px 0px 0px 30px;}
+.placementContent { height:90%; width: 85%;display: flex; flex-direction: column; overflow-y: auto; position: absolute; top: 0; right: 0;}
 .cardWrapper { height: 85%; width:90%; margin: auto; display: flex; flex-direction: column; }
-.cardWrapper .cardBox{margin-bottom: 20px; box-shadow: 0px 2px 4px rgba(127,127,127,0.6); border-radius: 5px; display: flex;}
-.cardWrapper .cardBox .consigner{flex: 5; }
-.cardWrapper .cardBox .consigner p{margin-left: 30px; padding:0px; font-size: 22px;}
-.cardWrapper .cardBox .consigner span{margin-left: 30px; padding:0px; font-size: 15px;}
-.cardWrapper .cardBox .lane{flex: 6; }
-.cardWrapper .cardBox p{padding:0px; font-size: 22px;}
-.cardWrapper .cardBox span{padding:0px; font-size: 15px;}
-.cardWrapper .cardBox .vehicle{flex: 6;}
-/*.cardWrapper .cardBox p{padding:0px; font-size: 15px;}*/
-.cardWrapper .cardBox .freight{flex: 3; }
-/*.cardWrapper .cardBox .freight p{padding:0px; font-size: 15px;}*/
-.cardWrapper .cardBox .timer{flex: 2; }
-/*.cardWrapper .cardBox .timer p{padding:0px; font-size: 15px;}*/
+.cardWrapper .cardBox{ margin-bottom: 20px; box-shadow: 0px 2px 4px rgba(127,127,127,0.6); border-radius: 5px; display: flex; position: relative;}
+.cardWrapper .cardBox:hover {cursor: pointer; }
+.cardWrapper .cardBox:hover .hoverEffect { position: absolute; width: 20px; height: 20px; background-color: #F44336; clip-path: polygon(100% 50%, 0 0, 0 100%); bottom: 50%; transform: translateY(50%); transition: .4s;}
+.cardWrapper .cardBox .consigner{flex: 5; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.cardWrapper .cardBox .consigner h4{ font-size: 20px; color: rgba(0,0,0,0.7);}
+.consigner span { margin-bottom: 20px; color: rgba(0,0,0,0.6);}
+.cardWrapper .cardBox .lane, .cardWrapper .cardBox .vehicle {flex: 6; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.cardWrapper .cardBox h4 { font-size: 20px; color: rgba(0,0,0,0.7);}
+.cardWrapper .cardBox .fa-clock { font-size: 20px; margin-top: 20px;}
+.cardWrapper .cardBox span{ margin-bottom: 20px; color: rgba(0,0,0,0.6);}
+.cardWrapper .cardBox .freight{flex: 4; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.cardWrapper .cardBox .timer{flex: 2; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.timer p {color: rgba(0,0,0,0.7);}
 .cardWrapper .cardBox .closeButton{display: flex; flex: 1;  justify-content: flex-end}
 .cardWrapper .cardBox .closeButton button{margin: 10px 0px 10px 0px; height:80px; width: 40px; background-color: #F44336; color: white; font-size: 20px; border-radius: 10px 0px 0px 10px; border: none;}
+
+
+/*Scroll Design*/
+.placementContent::-webkit-scrollbar-track {}
+.placementContent::-webkit-scrollbar-thumb { background-image: linear-gradient(to bottom, #49BAA6, #408E82); border-radius: 10px; }
+.placementContent::-webkit-scrollbar { width: 10px;}
+.placementContent::-webkit-scrollbar-thumb:hover { background-image: linear-gradient(to bottom, #49BAA6, #408E82); }
