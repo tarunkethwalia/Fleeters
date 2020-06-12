@@ -5,20 +5,18 @@ import Navbar from './Components/Navbar/Navbar'
 import SideBar from './Components/SideBar/SideBar'
 import Form from './Components/Form/Form'
 import Placement from './Components/Placement/Placement'
+import Login from './Components/Login/Login'
 
 class App extends Component {
     render() {
         return (
             <BrowserRouter>
                 <div className="App">
-                    <Navbar/>
-                    <div className="flexWrap">
-                        <SideBar/>
-                        <Switch>
-                            <Route exact path='/' component={Placement} />
-                            <Route path='/demand' component={Form} />
-                        </Switch>
-                    </div>
+                    <Switch>
+                        <Route exact path='/' component={Login}/>
+                        <Route path='/placement' component={Placement}/>
+                        <Route path='/demand' component={Form}/>
+                    </Switch>
                 </div>
             </BrowserRouter>
         )

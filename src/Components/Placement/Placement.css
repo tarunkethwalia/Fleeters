@@ -1,3 +1,20 @@
-.placements {width: 85%; position: absolute; right: 0; height: 100%;}
-.placements p{font-size: 20px;padding-left: 30px;}
-.cardWrapper { width:100%; background-color: aqua; }
+.content {width: 100%; position: fixed; height: 100%; display: flex; align-items: flex-end;}
+.sidebarContent{height:100%; width: 15%;}
+.placementContent {overflow-y: auto; height:100%; width: 85%;display: flex; flex-direction: column;}
+.placementContent p{height: 15%; font-size: 30px; color: black; padding: 70px 0px 0px 30px;}
+.cardWrapper { height: 85%; width:90%; margin: auto; display: flex; flex-direction: column; }
+.cardWrapper .cardBox{margin-bottom: 20px; box-shadow: 0px 2px 4px rgba(127,127,127,0.6); border-radius: 5px; display: flex;}
+.cardWrapper .cardBox .consigner{flex: 5; }
+.cardWrapper .cardBox .consigner p{margin-left: 30px; padding:0px; font-size: 22px;}
+.cardWrapper .cardBox .consigner span{margin-left: 30px; padding:0px; font-size: 15px;}
+.cardWrapper .cardBox .lane{flex: 6; }
+.cardWrapper .cardBox p{padding:0px; font-size: 22px;}
+.cardWrapper .cardBox span{padding:0px; font-size: 15px;}
+.cardWrapper .cardBox .vehicle{flex: 6;}
+/*.cardWrapper .cardBox p{padding:0px; font-size: 15px;}*/
+.cardWrapper .cardBox .freight{flex: 3; }
+/*.cardWrapper .cardBox .freight p{padding:0px; font-size: 15px;}*/
+.cardWrapper .cardBox .timer{flex: 2; }
+/*.cardWrapper .cardBox .timer p{padding:0px; font-size: 15px;}*/
+.cardWrapper .cardBox .closeButton{display: flex; flex: 1;  justify-content: flex-end}
+.cardWrapper .cardBox .closeButton button{margin: 10px 0px 10px 0px; height:80px; width: 40px; background-color: #F44336; color: white; font-size: 20px; border-radius: 10px 0px 0px 10px; border: none;}
