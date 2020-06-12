@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-
 const consignerModel = new schema({
-    Type:{ enum:['Enterprise', 'Broker','SMC','Transporter']},
+    Type: String,
     Name: String,
-    PhoneNo: Number
+    PhoneNo: [Number],
+    Address: [String]
 });
 
-module.exports = mongoose.model('Consigners',consignerModel);
+module.exports = mongoose.model('Consigners', consignerModel);

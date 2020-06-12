@@ -8,11 +8,11 @@
     "Address":{
         "LoadingAddress":[{
             "Address":"Gurgaon",
-            "POC":[{"Name":"Tarun","PhoneNo":"9891198501"}]
+            "POC":[{"Name":"Tarun","PhoneNo":["9891198501"]}]
         }],
          "UnLoadingAddress":[{
             "Address":"Gurgaon",
-            "POC":[{"Name":"Tarun","PhoneNo":"9891198501"}]
+            "POC":[{"Name":"Tarun","PhoneNo":["9891198501"]}]
         }]
 
     },
@@ -25,7 +25,7 @@
         "LoadingTime":"19baje",
         "TAT":"56hrs"
     },
-    "Vechile":{
+    "Vehicle":{
         "vehicleType":"Open",
         "Tyres":"10",
         "Height":"5",
