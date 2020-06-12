@@ -1,0 +1,40 @@
+{
+    "Consigner":{
+        "Name" : "Yogesh",
+        "Type" : "Broker",
+        "PhoneNo": "9582050680"
+    },
+    "Lane":{"StartPoint":"Los Angeles","EndPoint":"Canada","Distance":"1000"},
+    "Address":{
+        "LoadingAddress":[{
+            "Address":"Gurgaon",
+            "POC":[{"Name":"Tarun","PhoneNo":"9891198501"}]
+        }],
+         "UnLoadingAddress":[{
+            "Address":"Gurgaon",
+            "POC":[{"Name":"Tarun","PhoneNo":"9891198501"}]
+        }]
+
+    },
+    "Item":{
+        "Commodity":"Cartoons","Tonnage":"16"
+    },
+    "Time":{
+        "IndentTime":"10Baje",
+        "ClosingTime":"12baje",
+        "LoadingTime":"19baje",
+        "TAT":"56hrs"
+    },
+    "Vechile":{
+        "vehicleType":"Open",
+        "Tyres":"10",
+        "Height":"5",
+        "HQ":false
+    },
+    "Freight":{
+        "Amount":"65000",
+        "Advance":"60000",
+        "Percentage":"90"
+    }
+
+}
