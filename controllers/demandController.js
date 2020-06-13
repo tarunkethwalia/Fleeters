@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 const Demands = require('../models/demandModel');
 const consignerSchema = require('../models/consignerModel');
+const laneSchema = require('../models/laneModel');
 const response = require('../utils/http-utils');
 exports.addConsigner = (req, res) => {
 
@@ -16,6 +17,21 @@ exports.addConsigner = (req, res) => {
     }).catch(error => {
         res.status(401).json({message: "Error Found", error: error});
     })
+};
+
+exports.addLane = (req, res) => {
+
+    const Lanes = new laneSchema({
+        StartPoint: req.body.StartPoint,
+        EndPoint: req.body.EndPoint,
+        Distance: req.body.Distance
+    });
+    Lanes.save().then(data => {
+        res.status(200).json({message: "Data saved successfully", data: data});
+    }).catch(error => {
+        res.status(401).json({message: "Error Found", error: error});
+    })
+
 };
 exports.createDemand = (req, res) => {
 
@@ -80,12 +96,26 @@ exports.createDemand = (req, res) => {
 // exports.allDemands =async()=>{
 //
 // };
-//
+exports.changeDemandStatus = async (demandId, status, reason) => {
+    try {
+        let demand = await Demands.findByIdAndUpdate(demandId, {
+            demandStatus:{status:status,reason:reason}
+        },{new:true});
+        return response.Ok(demand);
+    } catch (e) {
+        return response.BadRequest(e);
+
+    }
+
+}
+
 exports.activeDemands = async () => {
     try {
-        let demands = await Demands.find({demandStatus: "Active"});
+        let demands = await Demands.find({"demandStatus.status":"Active"});
+        console.log(demands);
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
     }
 };
+

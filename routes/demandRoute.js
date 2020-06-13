@@ -5,6 +5,19 @@ router.post('/createDemand', demandController.createDemand);
 
 router.post('/addConsigner', demandController.addConsigner);
 
+router.post('/addLane',demandController.addLane);
+
+router.put('/:demandId/changeDemandStatus', async(req,res)=>{
+
+    try{
+        let ctx=await demandController.changeDemandStatus(req.params.demandId,req.body.demandStatus.status,req.body.demandStatus.reason);
+        ctx(req,res);
+    }
+    catch(e){
+        console.log('Route is catching error',e);
+        res.status(500).json(e);
+    }
+});
 
 // router.get('/allDemands', async(req,res)=>{
 //

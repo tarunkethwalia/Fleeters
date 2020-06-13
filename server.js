@@ -8,7 +8,8 @@ const env = require('./environment/env').env;
 
 mongoose.connect(process.env.MongoUrl || env.MongoUrl, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify:false
 }).then(() => {
     console.log("Mongo Connection Successful.")
 }).catch(err => console.error(err));
