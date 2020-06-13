@@ -17,6 +17,7 @@
 .timer p {color: rgba(0,0,0,0.7);}
 .cardWrapper .cardBox .closeButton{display: flex; flex: 1;  justify-content: flex-end}
 .cardWrapper .cardBox .closeButton button{margin: 10px 0px 10px 0px; height:80px; width: 40px; background-color: #F44336; color: white; font-size: 20px; border-radius: 10px 0px 0px 10px; border: none;}
+.emptyDemands {text-align: center;}
 
 
 /*Scroll Design*/
