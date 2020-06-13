@@ -1,1 +1,15 @@
-.Form {width: 85%; position: absolute; right: 0; overflow-y: auto;}
+.formFlex {width: 100%; display: flex;}
+.sidebarContent {width: 15%;}
+.formWrapper {width: 85%;}
+.formHeading {width: 100%; padding: 5px 20px;}
+.formHeading h4{font-size: 22px; font-family: 'Titillium Web', sans-serif;}
+.demandConsigner {width: 100%;}
+.consignerHeading {width: 100%; padding: 0 40px;}
+.consignerHeading h5 {font-size: 20px;}
+.consignerInfo {width: 100%; display: flex; justify-content: space-around;}
+.input-field {width: 30%;}
+/*.consignerAutofill {width: 100%; display:flex;}*/
+/*.input-field .selectLane{width: 30%; background-color: #F44336}*/
+/*.input-field .selectConsigner{width: 30%; background-color: #49BAA6;}*/
+/*.demandTimings {display:flex;}*/
+/*.demandAddress {display: flex;}*/
