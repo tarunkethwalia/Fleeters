@@ -37,7 +37,7 @@ const freightSchema =new schema({
 
 const demandModel = new schema({
     Consigner: {Name: String, Type: String, PhoneNo: [Number] ,Address:[Number]},
-    demandStatus: {type: String, default: "Active"},
+    demandStatus: {status:{type:String,default:"Active"}, reason:{type:String,default:null} },
     Lane: laneSchema,
     Address: addressSchema,
     Item: {Commodity: String, Tonnage: Number},
