@@ -1,24 +1,10 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 const Demands = require('../models/demandModel');
-const consignerSchema = require('../models/consignerModel');
 const laneSchema = require('../models/laneModel');
 const response = require('../utils/http-utils');
 
-exports.addConsigner = (req, res) => {
 
-    const consigner = new consignerSchema({
-        Name: req.body.Name,
-        Type: req.body.Type,
-        PhoneNo: req.body.PhoneNo,
-        Address: req.body.Address
-    });
-    consigner.save().then(data => {
-        res.status(200).json({message: "Data saved successfully", data: data});
-    }).catch(error => {
-        res.status(401).json({message: "Error Found", error: error});
-    })
-};
 
 exports.addLane = (req, res) => {
 
@@ -96,9 +82,7 @@ exports.createDemand = (req, res) => {
 
 };
 
-// exports.allDemands =async()=>{
-//
-// };
+
 exports.changeDemandStatus = async (demandId, status, reason) => {
     try {
         let demand = await Demands.findByIdAndUpdate(demandId, {
@@ -120,23 +104,47 @@ exports.activeDemands = async () => {
     }
 };
 
-exports.unactiveDemands = async () => {
+exports.inactiveDemands = async () => {
     try {
-        let demands = await Demands.find({"demandStatus.status": "Active"});
+        let demands = await Demands.find({"demandStatus.status":{$ne: "Active"}});
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
     }
 };
 
-
-
-exports.getConsigners =async () =>{
-    try{
-        let consigners =await consignerSchema .find({});
-        return response.Ok(consigners);
+exports.rejectedDemands = async () => {
+    try {
+        let demands = await Demands.find({"demandStatus.status":"Rejected"});
+        return response.Ok(demands);
+    } catch (e) {
+        return response.BadRequest(e);
     }
-    catch(e){
+};
+
+exports.pendingDemands = async () => {
+    try {
+        let demands = await Demands.find({"demandStatus.status":"Pending"});
+        return response.Ok(demands);
+    } catch (e) {
+        return response.BadRequest(e);
+    }
+};
+
+exports.completedDemands = async () => {
+    try {
+        let demands = await Demands.find({"demandStatus.status":"Completed"});
+        return response.Ok(demands);
+    } catch (e) {
+        return response.BadRequest(e);
+    }
+};
+
+exports.allDemands = async () => {
+    try {
+        let demands = await Demands.find({});
+        return response.Ok(demands);
+    } catch (e) {
         return response.BadRequest(e);
     }
 };
