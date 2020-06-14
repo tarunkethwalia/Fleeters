@@ -12,6 +12,7 @@ class Form extends Component {
             startingPoint: 'Delhi',
             suggestions: [],
             text: '',
+            HQ: false
         }
     }
 
@@ -290,7 +291,7 @@ class Form extends Component {
                                         <div className="switch">
                                             <label>
                                                 No
-                                                <input type="checkbox" />
+                                                <input type="checkbox" onClick={()=>{this.setState({...this.state, HQ: !this.state.HQ})}}/>
                                                 <span className="lever"></span>
                                                 Yes
                                             </label>
@@ -304,10 +305,13 @@ class Form extends Component {
                                 </div>
                                 <div className="countBody">
                                     <div className="input-field">
-                                        <input id="count" type="text" className="validate"/>
+                                        <input id="count" type="number" className="validate"/>
                                         <label htmlFor="count">Count</label>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="demandSubmit">
+                                <button className="waves-effect waves-light btn">Submit</button>
                             </div>
                         </div>
                     </div>

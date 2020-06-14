@@ -4,7 +4,6 @@
 .cardWrapper { height: 85%; width:90%; margin: auto; display: flex; flex-direction: column; }
 .cardWrapper .cardBox{ margin-bottom: 20px; box-shadow: 0px 2px 4px rgba(127,127,127,0.6); border-radius: 5px; display: flex; position: relative;}
 .cardWrapper .cardBox:hover {cursor: pointer; }
-.cardWrapper .cardBox:hover .hoverEffect { position: absolute; width: 20px; height: 20px; background-color: #F44336; clip-path: polygon(100% 50%, 0 0, 0 100%); bottom: 50%; transform: translateY(50%); transition: .4s;}
 .cardWrapper .cardBox .consigner{flex: 5; display: flex; flex-direction: column; justify-content: center; align-items: center;}
 .cardWrapper .cardBox .consigner h4{ font-size: 20px; color: rgba(0,0,0,0.7);}
 .consigner span { margin-bottom: 20px; color: rgba(0,0,0,0.6);}

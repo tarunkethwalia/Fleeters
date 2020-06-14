@@ -54,7 +54,6 @@ class Placement extends Component {
                                             demands && demands.map(demand=>{
                                                 return(
                                                     <div className="cardBox" key={demand._id}>
-                                                        <div className="hoverEffect"></div>
                                                         <div className="consigner">
                                                             <h4>{demand.Consigner.Name}</h4>
                                                             <span>{demand.Consigner.Type}</span>
