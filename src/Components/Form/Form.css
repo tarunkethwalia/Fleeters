@@ -1,15 +1,18 @@
 .formFlex {width: 100%; display: flex;}
 .sidebarContent {width: 15%;}
-.formWrapper {width: 85%;}
+.formWrapper {width: 85%; display: flex; flex-direction: column;}
 .formHeading {width: 100%; padding: 5px 20px;}
 .formHeading h4{font-size: 22px; font-family: 'Titillium Web', sans-serif;}
 .demandConsigner {width: 100%;}
-.consignerHeading {width: 100%; padding: 0 40px;}
-.consignerHeading h5 {font-size: 20px;}
+.consignerHeading, .timingHeading, .addressHeading {width: 100%; padding: 10px 40px 0;}
+.consignerHeading h5, .timingHeading h5, .addressHeading h5 {font-size: 20px;}
 .consignerInfo {width: 100%; display: flex; justify-content: space-around;}
-.input-field {width: 30%;}
-/*.consignerAutofill {width: 100%; display:flex;}*/
-/*.input-field .selectLane{width: 30%; background-color: #F44336}*/
-/*.input-field .selectConsigner{width: 30%; background-color: #49BAA6;}*/
-/*.demandTimings {display:flex;}*/
-/*.demandAddress {display: flex;}*/
+.input-field {width: 25%;}
+.buttonFlex {width: 100%; display: flex; justify-content: flex-end;}
+.buttonFlex button {background-color: #49BAA6; color: white; margin-left: 10px;}
+.buttonFlex button:hover {color: white;}
+.buttonFlex button:focus {outline: none;}
+.consignerAutofill {width: 100%; display: flex; justify-content: space-around; margin: 10px 0;}
+.timingsBody {width: 100%; display: flex; justify-content: space-around;}
+.timingsBody2 {width: 100%;}
+.timingsBody2 .input-field {margin-left: 4%;}
