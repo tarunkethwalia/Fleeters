@@ -2,16 +2,52 @@ import React, {Component} from 'react';
 import './Form.css';
 import Navbar from "../Navbar/Navbar";
 import SideBar from "../SideBar/SideBar";
-import CssUtilities from "../../Utils/Autocomplete";
 
 class Form extends Component {
     constructor(props) {
         super(props);
+        this.items = ["ChattisGarh - Tiruvantapuram", "Owl", "Own", "Two"];
         this.state = {
-            startingPoint : 'Delhi'
+            startingPoint: 'Delhi',
+            suggestions: [],
+            text: '',
         }
     }
+
+    onHandleChange = (e) => {
+        const value = e.target.value;
+        let suggestions = [];
+        if (value.length > 0) {
+            const regex = new RegExp(`^${value}`, 'i');
+            suggestions = this.items.sort().filter(v => regex.test(v));
+        }
+        this.setState(() => ({
+                suggestions, text: value
+            }
+        ));
+    }
+
+    suggestionSelected(value) {
+        this.setState(() => ({
+            text: value,
+            suggestions: [],
+        }))
+    }
+
+    renderSuggestions() {
+        const {suggestions} = this.state;
+        if (suggestions.length === 0) {
+            return null;
+        }
+        return (
+            <ul>
+                {suggestions.map((item) => <li onClick={() => this.suggestionSelected(item)}>{item}</li>)}
+            </ul>
+        );
+    }
+
     render() {
+        const {text} = this.state;
         return (
             <div className="Form">
                 <Navbar/>
@@ -28,14 +64,16 @@ class Form extends Component {
                                 </div>
                                 <div className="consignerInfo">
                                     <div className="input-field">
-                                        <input type="text" id="autocomplete-input" className="autocomplete"/>
+                                        <input value={text} type="text" id="autocomplete-input" className="autocomplete"
+                                               onChange={this.onHandleChange}/>
                                         <label htmlFor="autocomplete-input">Select Lane</label>
+                                        {this.renderSuggestions()}
                                         <div className="buttonFlex">
                                             <button className="waves-effect waves-light btn laneButton">Add</button>
                                         </div>
                                     </div>
                                     <div className="input-field">
-                                        <input disabled type="text" id="autocomplete-input2" className="autocomplete2"/>
+                                        <input type="text" id="autocomplete-input2" className="autocomplete2"/>
                                         <label htmlFor="autocomplete-input2">Select Consigner</label>
                                         <div className="buttonFlex">
                                             <button className="waves-effect waves-light btn">Edit</button>
@@ -46,19 +84,19 @@ class Form extends Component {
                                 </div>
                                 <div className="consignerAutofill">
                                     <div className="input-field">
-                                        <input disabled value={this.state.startingPoint} id="disabled" type="text"
-                                               className="validate" />
-                                            <label htmlFor="disabled">Starting Point</label>
+                                        <input placeholder="Starting Point" disabled value={this.state.startingPoint}
+                                               id="disabled" type="text"
+                                               className="validate"/>
                                     </div>
                                     <div className="input-field">
-                                        <input disabled value={this.state.startingPoint} id="disabled" type="text"
-                                               className="validate" />
-                                        <label htmlFor="disabled">Ending Point</label>
+                                        <input placeholder="Ending Point" disabled value={this.state.startingPoint}
+                                               id="disabled" type="text"
+                                               className="validate"/>
                                     </div>
                                     <div className="input-field">
-                                        <input disabled value={this.state.startingPoint} id="disabled" type="text"
-                                               className="validate" />
-                                        <label htmlFor="disabled">Distance (In Km.)</label>
+                                        <input placeholder="Distance(in Km.)" disabled value={this.state.startingPoint}
+                                               id="disabled" type="text"
+                                               className="validate"/>
                                     </div>
                                 </div>
                             </div>

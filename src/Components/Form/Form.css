@@ -9,6 +9,11 @@
 .consignerHeading h5, .timingHeading h5, .addressHeading h5 {font-size: 20px;}
 .consignerInfo {width: 100%; display: flex; justify-content: space-around;}
 .input-field {width: 25%;}
+.input-field input:focus {border: none;}
+.input-field ul {box-shadow:0 2px 4px rgba(127,127,127,1); margin: 0;padding: 0; position: absolute; top: 35px; z-index: 10; background-color: white; width: 100%;}
+.input-field ul::before {content: "";}
+.input-field li{padding: 10px 5px; cursor: pointer;}
+.input-field li:hover{background-color: #49BAA6; color: white;}
 .buttonFlex {width: 100%; display: flex; justify-content: flex-end;}
 .buttonFlex button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px;}
 .buttonFlex button:hover {color: white;}
