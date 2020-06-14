@@ -72,57 +72,34 @@ class Form extends Component {
                             <div className="addressHeading">
                                 <h5>Address</h5>
                             </div>
+                            <div className="addressBody">
+                                <div className="loadAddressBody">
+                                    <div className="input-field">
+                                        <input id="load-address" type="text" className="validate"/>
+                                        <label htmlFor="load-address">Loading Address</label>
+                                    </div>
+                                    <div className="addressFlex">
+                                        <div className="addressPOCHeading">
+                                            <h6>POC</h6>
+                                        </div>
+                                        <button className="waves-effect waves-light btn">Add</button>
+                                    </div>
+                                </div>
+                                <div className="unloadAddressBody">
+                                    <div className="input-field">
+                                        <input id="unload-address" type="text" className="validate"/>
+                                        <label htmlFor="unload-address">Unloading Address</label>
+                                    </div>
+                                    <div className="addressFlex">
+                                        <div className="addressPOCHeading">
+                                            <h6>POC</h6>
+                                        </div>
+                                        <button className="waves-effect waves-light btn">Add</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    {/*<div className="demandAddress">*/}
-                    {/*    Addresses*/}
-                    {/*    <div className="loadingAddress">*/}
-                    {/*        <div className="input-field">*/}
-                    {/*            <input id="loadingAddress" type="text" className="validate"/>*/}
-                    {/*            <label htmlFor="loadingAddress">Loading Address</label>*/}
-                    {/*        </div>*/}
-                    {/*        POC*/}
-                    {/*        <button className="waves-effect waves-light btn">Add</button>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="unloadingAddress">*/}
-                    {/*        <div className="input-field">*/}
-                    {/*            <input id="unloadingAddress" type="text" className="validate"/>*/}
-                    {/*            <label htmlFor="unloadingAddress">Unloading Address</label>*/}
-                    {/*        </div>*/}
-                    {/*        POC*/}
-                    {/*        <button className="waves-effect waves-light btn">Add</button>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className="demandVehicle">*/}
-                    {/*    Vehicle*/}
-                    {/*    <div className="input-field">*/}
-                    {/*        <select>*/}
-                    {/*            <option value="" disabled selected>Choose your option</option>*/}
-                    {/*            <option value="1">Open</option>*/}
-                    {/*            <option value="2">Container</option>*/}
-                    {/*            <option value="3">Trailer</option>*/}
-                    {/*        </select>*/}
-                    {/*        <label>Vehicle Type</label>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="input-field">*/}
-                    {/*        <select>*/}
-                    {/*            <option value="" disabled selected>Choose your option</option>*/}
-                    {/*            <option value="1">Option 1</option>*/}
-                    {/*            <option value="2">Option 2</option>*/}
-                    {/*            <option value="3">Option 3</option>*/}
-                    {/*        </select>*/}
-                    {/*        <label>Vehicle Type</label>*/}
-                    {/*    </div>*/}
-                    {/*    <div className="input-field">*/}
-                    {/*        <select>*/}
-                    {/*            <option value="" disabled selected>Choose your option</option>*/}
-                    {/*            <option value="1">Option 1</option>*/}
-                    {/*            <option value="2">Option 2</option>*/}
-                    {/*            <option value="3">Option 3</option>*/}
-                    {/*        </select>*/}
-                    {/*        <label>Vehicle Type</label>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </div>
             </div>
         )

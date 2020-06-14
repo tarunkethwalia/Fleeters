@@ -65,7 +65,7 @@ class Placement extends Component {
                                                         </div>
                                                         <div className="vehicle">
                                                             <h4>Vehicle</h4>
-                                                            <span>{demand.Vehicle.vehicleType}/{demand.Vehicle.Height+' ft'}/{demand.Item.Tonnage+' tn'}{demand.Vehicle.TruckType === "Not Applicable" ? null : '/'+demand.Vehicle.TruckType }</span>
+                                                            <span>{demand.Vehicle.vehicleType} {demand.Vehicle.Height+'ft'} {demand.Item.Tonnage+'tn'} {demand.Vehicle.TruckType === "Not Applicable" ? null : demand.Vehicle.TruckType }</span>
                                                         </div>
                                                         <div className="freight">
                                                             <h4>Freight</h4>
