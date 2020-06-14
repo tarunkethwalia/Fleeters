@@ -4,6 +4,7 @@ const Demands = require('../models/demandModel');
 const consignerSchema = require('../models/consignerModel');
 const laneSchema = require('../models/laneModel');
 const response = require('../utils/http-utils');
+
 exports.addConsigner = (req, res) => {
 
     const consigner = new consignerSchema({
@@ -21,12 +22,13 @@ exports.addConsigner = (req, res) => {
 
 exports.addLane = (req, res) => {
 
-    const Lanes = new laneSchema({
+    const Lane = new laneSchema({
+        Route: req.body.Route,
         StartPoint: req.body.StartPoint,
         EndPoint: req.body.EndPoint,
         Distance: req.body.Distance
     });
-    Lanes.save().then(data => {
+    Lane.save().then(data => {
         res.status(200).json({message: "Data saved successfully", data: data});
     }).catch(error => {
         res.status(401).json({message: "Error Found", error: error});
@@ -44,6 +46,7 @@ exports.createDemand = (req, res) => {
 
 
     const lane = {
+        Route:req.body.Lane.Route,
         StartPoint: req.body.Lane.StartPoint,
         EndPoint: req.body.Lane.EndPoint,
         Distance: req.body.Lane.Distance
@@ -99,23 +102,51 @@ exports.createDemand = (req, res) => {
 exports.changeDemandStatus = async (demandId, status, reason) => {
     try {
         let demand = await Demands.findByIdAndUpdate(demandId, {
-            demandStatus:{status:status,reason:reason}
-        },{new:true});
+            demandStatus: {status: status, reason: reason}
+        }, {new: true});
         return response.Ok(demand);
     } catch (e) {
         return response.BadRequest(e);
 
     }
-
 }
 
 exports.activeDemands = async () => {
     try {
-        let demands = await Demands.find({"demandStatus.status":"Active"});
-        console.log(demands);
+        let demands = await Demands.find({"demandStatus.status": "Active"});
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
     }
 };
 
+exports.unactiveDemands = async () => {
+    try {
+        let demands = await Demands.find({"demandStatus.status": "Active"});
+        return response.Ok(demands);
+    } catch (e) {
+        return response.BadRequest(e);
+    }
+};
+
+
+
+exports.getConsigners =async () =>{
+    try{
+        let consigners =await consignerSchema .find({});
+        return response.Ok(consigners);
+    }
+    catch(e){
+        return response.BadRequest(e);
+    }
+};
+
+exports.getLanes =async () =>{
+    try{
+        let Lanes =await laneSchema.find({});
+        return response.Ok(Lanes);
+    }
+    catch(e){
+        return response.BadRequest(e);
+    }
+};

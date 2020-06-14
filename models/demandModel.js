@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 const laneSchema = {
+    Route:String,
     StartPoint: String,
     EndPoint: String,
     Distance: String
@@ -36,7 +37,7 @@ const freightSchema =new schema({
 });
 
 const demandModel = new schema({
-    Consigner: {Name: String, Type: String, PhoneNo: [Number] ,Address:[Number]},
+    Consigner: {Name: String, Type: String, PhoneNo: [Number] ,Address:[String]},
     demandStatus: {status:{type:String,default:"Active"}, reason:{type:String,default:null} },
     Lane: laneSchema,
     Address: addressSchema,
