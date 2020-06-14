@@ -4,12 +4,13 @@
 .formHeading {width: 100%; padding: 5px 20px;}
 .formHeading h4{font-size: 22px; font-family: 'Titillium Web', sans-serif;}
 .demandConsigner {width: 100%;}
+.formCard{ box-shadow: 0 2px 4px rgba(127,127,127,1); margin: 0 20px 20px; border-radius: 5px;}
 .consignerHeading, .timingHeading, .addressHeading {width: 100%; padding: 10px 40px 0;}
 .consignerHeading h5, .timingHeading h5, .addressHeading h5 {font-size: 20px;}
 .consignerInfo {width: 100%; display: flex; justify-content: space-around;}
 .input-field {width: 25%;}
 .buttonFlex {width: 100%; display: flex; justify-content: flex-end;}
-.buttonFlex button {background-color: #49BAA6; color: white; margin-left: 10px;}
+.buttonFlex button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px;}
 .buttonFlex button:hover {color: white;}
 .buttonFlex button:focus {outline: none;}
 .consignerAutofill {width: 100%; display: flex; justify-content: space-around; margin: 10px 0;}
@@ -20,8 +21,20 @@
 .loadAddressBody, .unloadAddressBody { width: 46%; display: flex; flex-direction: column;}
 .loadAddressBody .input-field, .unloadAddressBody .input-field { width: 60%;}
 .addressFlex {width: 60%; display: flex; justify-content: space-between;}
-.addressFlex button {background-color: #49BAA6; color: white; margin-left: 10px;}
+.addressFlex button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px;}
 .addressFlex button:hover {color: white;}
 .addressFlex button:focus {outline: none;}
 .addressPOCHeading {display: flex; align-items: center;}
 .addressPOCHeading h6 {margin: 0;}
+.POCDetails {width: 60%; margin: 20px 0; height: 90px; overflow-y: auto; padding: 0 10px;}
+.POCDiv {display: flex; justify-content: space-between; height: 30px; align-items: center; font-size: 12px;}
+.POCDiv .POCName::before { content: "\2022"; color: #49BAA6; font-weight: bold; display: inline-block; width: 1em; margin-left: 1em;}
+input[id='disabled'] { font-weight: bold;}
+
+
+/*Scroll Design*/
+.POCDetails::-webkit-scrollbar-track, .formWrapper::-webkit-scrollbar-track {}
+.POCDetails::-webkit-scrollbar-thumb, .formWrapper::-webkit-scrollbar-thumb { background-image: linear-gradient(to bottom, #49BAA6, #408E82); border-radius: 10px; }
+.POCDetails::-webkit-scrollbar { width: 5px;}
+.formWrapper::-webkit-scrollbar { width: 10px;}
+.POCDetails::-webkit-scrollbar-thumb:hover, .formWrapper::-webkit-scrollbar-thumb:hover { background-image: linear-gradient(to bottom, #49BAA6, #408E82); }
