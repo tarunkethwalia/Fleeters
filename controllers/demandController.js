@@ -97,7 +97,7 @@ exports.changeDemandStatus = async (demandId, status, reason) => {
 
 exports.activeDemands = async () => {
     try {
-        let demands = await Demands.find({"demandStatus.status":{$ne: "Active"}});
+        let demands = await Demands.find({"demandStatus.status": "Active"});
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
