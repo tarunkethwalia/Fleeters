@@ -7,7 +7,10 @@
 .formCard{ box-shadow: 0 2px 4px rgba(127,127,127,1); margin: 0 20px 20px; border-radius: 5px;}
 .consignerHeading, .timingHeading, .addressHeading, .vehicleHeading, .countHeading {width: 100%; padding: 10px 40px 0;}
 .consignerHeading h5, .timingHeading h5, .addressHeading h5, .vehicleHeading h5, .countHeading h5 {font-size: 20px; margin-top: 10px;}
-.consignerInfo, .vehicleInfo {width: 100%; display: flex; justify-content: space-around;}
+.vehicleInfo {width: 100%; display: flex; justify-content: space-around;}
+.consignerInfo {width: 100%; display: flex; justify-content: flex-start;}
+.consignerInfo .some { width: 36%; margin-left: 4%;}
+.consignerInfo .some2 { width: 36%; margin-left: 10%;}
 .input-field {width: 25%;}
 .input-field input:focus {border: none;}
 .input-field ul {box-shadow:0 2px 4px rgba(127,127,127,1); margin: 0;padding: 0; position: absolute; top: 35px; z-index: 10; background-color: white; width: 100%;}
@@ -25,19 +28,19 @@
 .addressBody {width: 100%; display: flex; justify-content: center;}
 .loadAddressBody, .unloadAddressBody { width: 46%; display: flex; flex-direction: column;}
 .loadAddressBody .input-field, .unloadAddressBody .input-field { width: 60%;}
-.addressFlex {width: 60%; display: flex; justify-content: space-between;}
-.addressFlex button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px;}
+.addressFlex {width: 80%; display: flex; justify-content: space-between;}
+.addressFlex button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px; text-transform: capitalize;}
 .addressFlex button:hover {color: white;}
 .addressFlex button:focus {outline: none;}
 .addressPOCHeading {display: flex; align-items: center;}
 .addressPOCHeading h6 {margin: 0;}
-.POCDetails {width: 60%; margin: 20px 0 0; height: 90px; overflow-y: auto; padding: 0 10px;}
+.POCDetails {width: 80%; margin: 20px 0; height: 90px; overflow-y: auto; padding: 0 10px;}
 .POCDiv {display: flex; justify-content: space-between; height: 30px; align-items: center; font-size: 12px;}
 .POCDiv .POCName::before, .loadAddress::before { content: "\2022"; color: #49BAA6; font-weight: bold; display: inline-block; width: 1em; margin-left: 1em;}
 input[id='disabled'] { font-weight: bold;}
 .POCFooter { width: 80%;}
 .POCSubmit { width: 80%; display: flex; justify-content: flex-end; align-items: center; margin: 0px 0 5px;}
-.POCSubmit button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px;}
+.POCSubmit button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px; text-transform: capitalize;}
 .POCSubmit button:hover {color: white;}
 .POCSubmit button:focus {outline: none;}
 .footerBody { width: 100%; height: 90px; overflow-y: auto; padding: 0 10px;}

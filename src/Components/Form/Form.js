@@ -65,7 +65,7 @@ class Form extends Component {
                                     <h5>Consigner</h5>
                                 </div>
                                 <div className="consignerInfo">
-                                    <div className="input-field">
+                                    <div className="input-field some">
                                         <input value={text} type="text" id="autocomplete-input" className="autocomplete"
                                                onChange={this.onHandleChange}/>
                                         <label htmlFor="autocomplete-input">Select Lane</label>
@@ -74,7 +74,7 @@ class Form extends Component {
                                             <button className="waves-effect waves-light btn laneButton">Add</button>
                                         </div>
                                     </div>
-                                    <div className="input-field">
+                                    <div className="input-field some2">
                                         <input type="text" id="autocomplete-input2" className="autocomplete2"/>
                                         <label htmlFor="autocomplete-input2">Select Consigner</label>
                                         <div className="buttonFlex">
@@ -82,7 +82,7 @@ class Form extends Component {
                                             <button className="waves-effect waves-light btn">Add</button>
                                         </div>
                                     </div>
-                                    <div className="input-field"></div>
+                                    {/*<div className="input-field"></div>*/}
                                 </div>
                                 <div className="consignerAutofill">
                                     <div className="input-field">
@@ -141,7 +141,7 @@ class Form extends Component {
                                             <div className="addressPOCHeading">
                                                 <h6>POC</h6>
                                             </div>
-                                            <button className="waves-effect waves-light btn">Add</button>
+                                            <button className="waves-effect waves-light btn">Add POC</button>
                                         </div>
                                         <div className="POCDetails">
                                             <div className="POCDiv">
@@ -154,7 +154,7 @@ class Form extends Component {
                                             </div>
                                         </div>
                                         <div className='POCSubmit'>
-                                            <button className="waves-effect waves-light btn">Add</button>
+                                            <button className="waves-effect waves-light btn">Add Stoppage</button>
                                         </div>
                                         <div className="POCFooter">
                                             <div className="footerHeading">
@@ -177,7 +177,7 @@ class Form extends Component {
                                             <div className="addressPOCHeading">
                                                 <h6>POC</h6>
                                             </div>
-                                            <button className="waves-effect waves-light btn">Add</button>
+                                            <button className="waves-effect waves-light btn">Add POC</button>
                                         </div>
                                         <div className="POCDetails">
                                             <div className="POCDiv">
@@ -206,7 +206,7 @@ class Form extends Component {
                                             </div>
                                         </div>
                                         <div className='POCSubmit'>
-                                            <button className="waves-effect waves-light btn">Add</button>
+                                            <button className="waves-effect waves-light btn">Add Stoppage</button>
                                         </div>
                                         <div className="POCFooter">
                                             <div className="footerHeading">
