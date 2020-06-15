@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 const consignerModel = new schema({
-    Type: String,
-    Name: String,
+    Type: {type:schema.Types.String,required:true},
+    Name: {type:schema.Types.String,required:true},
     PhoneNo: [Number],
     Address: [String]
 });
