@@ -30,7 +30,6 @@ exports.createDemand = (req, res) => {
         Address: req.body.Consigner.Address
     };
 
-
     const lane = {
         Route:req.body.Lane.Route,
         StartPoint: req.body.Lane.StartPoint,
