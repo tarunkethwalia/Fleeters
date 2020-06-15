@@ -19,8 +19,10 @@ class Form extends Component {
             suggestions: [],    //selectLane
             value: '',  //selectLane
             text: '',   //selectLane
-            startingPoint: null,    //disabled Lane
-            showModel : false,  //LaneModel
+            startingPoint: '',    //disabled Lane
+            endingPoint: '',    //disabled Lane
+            distance: '',    //disabled Lane
+            lanes : [],  //Lanes
             time: null,
             HQ: false
         }
@@ -33,7 +35,6 @@ class Form extends Component {
             time: time
         });
         laneService.getLanes().then(data=>{
-            console.log(data.data.data);
             const lanes = data.data.data;
             const routes = [];
             lanes.map(lane=>{
@@ -41,6 +42,10 @@ class Form extends Component {
                 routes.push(route);
             });
             this.items = routes;
+            this.setState({
+                ...this.state,
+                lanes: lanes
+            });
         }).catch(error=>{
             console.error(error);
         });
@@ -83,9 +88,20 @@ class Form extends Component {
 
     suggestionSelected(value) {
         this.setState(() => ({
+            ...this.state,
             text: value,
             suggestions: [],
-        }))
+        }));
+        this.state.lanes.map(lane=>{
+            if (lane.Route === value){
+                this.setState({
+                    ...this.state,
+                    startingPoint: lane.StartPoint,
+                    endingPoint: lane.EndPoint,
+                    distance: lane.Distance
+                });
+            }
+        });
     }
 
     renderSuggestions() {
@@ -147,12 +163,12 @@ class Form extends Component {
                                                className="validate"/>
                                     </div>
                                     <div className="input-field">
-                                        <input placeholder="Ending Point" disabled value={this.state.startingPoint}
+                                        <input placeholder="Ending Point" disabled value={this.state.endingPoint}
                                                id="disabled2" type="text"
                                                className="validate"/>
                                     </div>
                                     <div className="input-field">
-                                        <input placeholder="Distance(in Km.)" disabled value={this.state.startingPoint}
+                                        <input placeholder="Distance(in Km.)" disabled value={this.state.distance}
                                                id="disabled3" type="text"
                                                className="validate"/>
                                     </div>
