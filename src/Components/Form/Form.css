@@ -54,6 +54,9 @@ input[id='disabled'] { font-weight: bold;}
 .demandSubmit button {background-color: #49BAA6; color: white; margin-right: 20px; height: 40px; font-size: 16px; text-transform: capitalize; box-shadow: 0 4px 8px rgba(73,186,166,0.6);}
 .demandSubmit button:hover {color: white; box-shadow: 0 4px 4px rgba(73,186,166,0.6);}
 .demandSubmit button:focus {outline: none;}
+.input-field .DateInput input {border: none; outline: none;}
+.input-field .DateInput button:focus { outline: none;}
+.MuiButtonBase-root:focus{outline: none;}
 
 /*Scroll Design*/
 .POCDetails::-webkit-scrollbar-track, .formWrapper::-webkit-scrollbar-track, .footerBody::-webkit-scrollbar-track {}

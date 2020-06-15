@@ -3,18 +3,70 @@ import './Form.css';
 import {Link} from 'react-router-dom'
 import Navbar from "../Navbar/Navbar";
 import SideBar from "../SideBar/SideBar";
+import Datepicker from "../Datepicker/Datepicker";
+import store from "../../Store/stores/store";
+import LaneModel from "./Model/Lane/LaneModel";
+import laneService from "../../Services/laneService";
+import ConsignerModel from "./Model/Consigner/ConsignerModel";
+import consignerService from "../../Services/consignerService";
+const moment =require('moment');
 
 class Form extends Component {
     constructor(props) {
         super(props);
-        this.items = ["ChattisGarh - Tiruvantapuram", "Owl", "Own", "Two"];
+        this.items = [];
         this.state = {
-            startingPoint: 'Delhi',
-            suggestions: [],
-            text: '',
+            suggestions: [],    //selectLane
+            value: '',  //selectLane
+            text: '',   //selectLane
+            startingPoint: null,    //disabled Lane
+            showModel : false,  //LaneModel
+            time: null,
             HQ: false
         }
     }
+
+    componentDidMount() {
+        const time = store.getState().time;
+        this.setState({
+            ...this.state,
+            time: time
+        });
+        laneService.getLanes().then(data=>{
+            console.log(data.data.data);
+            const lanes = data.data.data;
+            const routes = [];
+            lanes.map(lane=>{
+                let route = lane.Route;
+                routes.push(route);
+            });
+            this.items = routes;
+        }).catch(error=>{
+            console.error(error);
+        });
+    }
+
+    handleDateChange = (value,id) => {
+        if(id === 'indentTime'){
+            store.dispatch({type:'INDENT_TIME', indentTime: value});
+            // const timing = store.getState().time.indentTime;
+            // console.log("ist :"+timing);
+            // console.log( "utd : "+moment.utc(timing).format());
+        }
+        else if(id === 'closingTime'){
+            store.dispatch({type:'CLOSING_TIME', closingTime: value});
+        }
+        else {
+            store.dispatch({type:'LOADING_TIME', loadingTime: value});
+        }
+    }
+
+    hideModel = () => {
+        this.setState({
+            ...this.state,
+            showModel : false
+        });
+    };
 
     onHandleChange = (e) => {
         const value = e.target.value;
@@ -53,6 +105,8 @@ class Form extends Component {
         return (
             <div className="Form">
                 <Navbar/>
+                <LaneModel />
+                <ConsignerModel/>
                 <div className="formFlex">
                     <div className="sidebarContent">
                         <SideBar/>
@@ -71,7 +125,8 @@ class Form extends Component {
                                         <label htmlFor="autocomplete-input">Select Lane</label>
                                         {this.renderSuggestions()}
                                         <div className="buttonFlex">
-                                            <button className="waves-effect waves-light btn laneButton">Add</button>
+                                            {/*<button className="waves-effect waves-light btn laneButton" onClick={() => {this.setState({...this.state, showModel : true})}}>Add</button>*/}
+                                            <button data-target="modal1" className="btn modal-trigger"> add </button>
                                         </div>
                                     </div>
                                     <div className="input-field some2">
@@ -79,7 +134,8 @@ class Form extends Component {
                                         <label htmlFor="autocomplete-input2">Select Consigner</label>
                                         <div className="buttonFlex">
                                             <button className="waves-effect waves-light btn">Edit</button>
-                                            <button className="waves-effect waves-light btn">Add</button>
+                                            {/*<button className="waves-effect waves-light btn">Add</button>*/}
+                                            <button data-target="modal2" className="btn modal-trigger"> add </button>
                                         </div>
                                     </div>
                                     {/*<div className="input-field"></div>*/}
@@ -87,17 +143,17 @@ class Form extends Component {
                                 <div className="consignerAutofill">
                                     <div className="input-field">
                                         <input placeholder="Starting Point" disabled value={this.state.startingPoint}
-                                               id="disabled" type="text"
+                                               id="disabled1" type="text"
                                                className="validate"/>
                                     </div>
                                     <div className="input-field">
                                         <input placeholder="Ending Point" disabled value={this.state.startingPoint}
-                                               id="disabled" type="text"
+                                               id="disabled2" type="text"
                                                className="validate"/>
                                     </div>
                                     <div className="input-field">
                                         <input placeholder="Distance(in Km.)" disabled value={this.state.startingPoint}
-                                               id="disabled" type="text"
+                                               id="disabled3" type="text"
                                                className="validate"/>
                                     </div>
                                 </div>
@@ -108,16 +164,13 @@ class Form extends Component {
                                 </div>
                                 <div className="timingsBody">
                                     <div className="input-field">
-                                        <input id="indent-time" type="text" className="validate"/>
-                                        <label htmlFor="indent-time">Indent Time</label>
+                                        <Datepicker dateValue={this.handleDateChange} label='Indent Time' id='indentTime'/>
                                     </div>
                                     <div className="input-field">
-                                        <input id="indent-close-time" type="text" className="validate"/>
-                                        <label htmlFor="indent-close-time">Indent Closing Time</label>
+                                        <Datepicker dateValue={this.handleDateChange} label='Closing Time' id='closingTime'/>
                                     </div>
                                     <div className="input-field">
-                                        <input id="loading-time" type="text" className="validate"/>
-                                        <label htmlFor="loading-time">Loading Time</label>
+                                        <Datepicker dateValue={this.handleDateChange} label='Loading Time' id='loadingTime'/>
                                     </div>
                                 </div>
                                 <div className="timingsBody2">
