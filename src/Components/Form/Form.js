@@ -135,16 +135,32 @@ class Form extends Component {
         const {text} = this.state;
         return (
             <div className="Form">
+                {/*Navbar*/}
                 <Navbar/>
+
+                {/*Lane Model*/}
                 <LaneModel show={this.state.showLaneModel} onHide={() => this.hideLaneModel()} />
+
+                {/*Consigner Model*/}
                 <ConsignerModel show={this.state.showModel} onHide={() => this.hideModel()} />
+
+                {/*Wrapper*/}
                 <div className="formFlex">
+
+                    {/*Sidebar Wrapper*/}
                     <div className="sidebarContent">
                         <SideBar/>
                     </div>
+
+                    {/*Form Wrapper*/}
                     <div className="formWrapper">
+
+                        {/*Form Heading*/}
                         <div className="formHeading"><h4>Create Demand:</h4></div>
+
                         <div className="formCard">
+
+                            {/*Consigner & Lane Details*/}
                             <div className="demandConsigner">
                                 <div className="consignerHeading">
                                     <h5>Consigner</h5>
@@ -189,6 +205,8 @@ class Form extends Component {
                                     </div>
                                 </div>
                             </div>
+
+                            {/*Timing Details*/}
                             <div className="demandTimings">
                                 <div className="timingHeading">
                                     <h5>Timings</h5>
@@ -206,15 +224,20 @@ class Form extends Component {
                                 </div>
                                 <div className="timingsBody2">
                                     <div className="input-field">
-                                        <input id="TAT" type="text" className="validate"/>
+                                        <input id="TAT" type="number" className="validate"/>
                                         <label htmlFor="TAT">TAT</label>
                                     </div>
                                 </div>
                             </div>
+
+                            {/*Address Details*/}
                             <div className="demandAddress">
+
+                                {/*Address Heading*/}
                                 <div className="addressHeading">
                                     <h5>Address</h5>
                                 </div>
+
                                 <div className="addressBody">
                                     <div className="loadAddressBody">
                                         <div className="input-field">
