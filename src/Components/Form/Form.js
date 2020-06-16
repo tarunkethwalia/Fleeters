@@ -22,6 +22,8 @@ class Form extends Component {
             startingPoint: '',    //disabled Lane
             endingPoint: '',    //disabled Lane
             distance: '',    //disabled Lane
+            showModel: false,   //Consigner Model
+            showLaneModel: false,   //Lane Model
             lanes : [],  //Lanes
             time: null,
             HQ: false
@@ -30,10 +32,12 @@ class Form extends Component {
 
     componentDidMount() {
         const time = store.getState().time;
+
         this.setState({
             ...this.state,
             time: time
         });
+
         laneService.getLanes().then(data=>{
             const lanes = data.data.data;
             const routes = [];
@@ -73,6 +77,13 @@ class Form extends Component {
         });
     };
 
+    hideLaneModel = () => {
+        this.setState({
+            ...this.state,
+            showLaneModel : false
+        });
+    };
+
     onHandleChange = (e) => {
         const value = e.target.value;
         let suggestions = [];
@@ -87,21 +98,25 @@ class Form extends Component {
     }
 
     suggestionSelected(value) {
+        let Sp=null;
+        let Ep=null;
+        let Ds=null;
+        this.state.lanes.map(lane=>{
+            if(lane.Route===value){
+                    Sp=lane.StartPoint;
+                    Ep=lane.EndPoint;
+                    Ds=lane.Distance;
+                    return true;
+            }
+        });
         this.setState(() => ({
             ...this.state,
             text: value,
             suggestions: [],
+            startingPoint: Sp,
+            endingPoint:Ep,
+            distance: Ds
         }));
-        this.state.lanes.map(lane=>{
-            if (lane.Route === value){
-                this.setState({
-                    ...this.state,
-                    startingPoint: lane.StartPoint,
-                    endingPoint: lane.EndPoint,
-                    distance: lane.Distance
-                });
-            }
-        });
     }
 
     renderSuggestions() {
@@ -121,8 +136,8 @@ class Form extends Component {
         return (
             <div className="Form">
                 <Navbar/>
-                <LaneModel />
-                <ConsignerModel/>
+                <LaneModel show={this.state.showLaneModel} onHide={() => this.hideLaneModel()} />
+                <ConsignerModel show={this.state.showModel} onHide={() => this.hideModel()} />
                 <div className="formFlex">
                     <div className="sidebarContent">
                         <SideBar/>
@@ -142,7 +157,7 @@ class Form extends Component {
                                         {this.renderSuggestions()}
                                         <div className="buttonFlex">
                                             {/*<button className="waves-effect waves-light btn laneButton" onClick={() => {this.setState({...this.state, showModel : true})}}>Add</button>*/}
-                                            <button data-target="modal1" className="btn modal-trigger"> add </button>
+                                            <button className="btn" onClick={ () => {this.setState({...this.state, showModel : true})}}> Add </button>
                                         </div>
                                     </div>
                                     <div className="input-field some2">
@@ -151,7 +166,7 @@ class Form extends Component {
                                         <div className="buttonFlex">
                                             <button className="waves-effect waves-light btn">Edit</button>
                                             {/*<button className="waves-effect waves-light btn">Add</button>*/}
-                                            <button data-target="modal2" className="btn modal-trigger"> add </button>
+                                            <button className="btn" onClick={ () => {this.setState({...this.state, showLaneModel : true})}}> Add </button>
                                         </div>
                                     </div>
                                     {/*<div className="input-field"></div>*/}
