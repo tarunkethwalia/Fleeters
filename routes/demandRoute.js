@@ -1,10 +1,7 @@
 const router = require('express').Router();
 const demandController = require('../controllers/demandController');
-const consignerController = require('../controllers/consignerController');
 
 router.post('/createDemand', demandController.createDemand);
-router.post('/addConsigner', consignerController.addConsigner);
-router.post('/addLane', demandController.addLane);
 router.put('/:demandId/changeDemandStatus', async (req, res) => {
 
     try {
@@ -17,39 +14,9 @@ router.put('/:demandId/changeDemandStatus', async (req, res) => {
 });
 
 
-router.get('/getConsigners', async (req, res) => {
-    try {
-        let ctx = await consignerController.getConsigners();
-        ctx(req, res);
-    } catch (e) {
-        console.log('Route is catching error', e);
-        res.status(500).json(e);
-    }
-});
-
-router.get('/getLanes', async (req, res) => {
-    try {
-        let ctx = await demandController.getLanes();
-        ctx(req, res);
-    } catch (e) {
-        console.log('Route is catching error', e);
-        res.status(500).json(e);
-    }
-});
-
 router.get('/activeDemands', async (req, res) => {
     try {
-        let ctx = await demandController.activeDemands();
-        ctx(req, res);
-    } catch (e) {
-        console.log('Route is catching error', e);
-        res.status(500).json(e);
-    }
-});
-
-router.get('/inactiveDemands', async (req, res) => {
-    try {
-        let ctx = await demandController.inactiveDemands();
+        let ctx = await demandController.activeDemands(req.body.startDate,req.body.endDate);
         ctx(req, res);
     } catch (e) {
         console.log('Route is catching error', e);

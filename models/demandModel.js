@@ -24,16 +24,16 @@ const vehicleSchema = {
 
 
 const timeSchema = new schema({
-    IndentTime: {type:schema.Types.Date,default:moment.utc()},
-    ClosingTime: {type:schema.Types.Date,required:true},
-    LoadingTime: {type:schema.Types.Date,required:true},
-    TAT: {type:schema.Types.Number,required:true}
+    IndentTime: {type:schema.Types.Date,default:moment.utc().local()},
+    ClosingTime: {type:schema.Types.Date},
+    LoadingTime: {type:schema.Types.Date},
+    TAT: {type:schema.Types.Number}
 });
 
 const freightSchema =new schema({
     Amount:{type:schema.Types.Number,required:true},
     Advance:{type:schema.Types.Number,required:true},
-    Percentage: {type:schema.Types.Number}
+    Percentage: {type:schema.Types.Number,required:true}
 });
 
 const demandModel = new schema({
