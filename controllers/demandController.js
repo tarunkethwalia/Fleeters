@@ -1,26 +1,7 @@
 const mongoose = require('mongoose');
-const schema = mongoose.Schema;
 const Demands = require('../models/demandModel');
-const laneSchema = require('../models/laneModel');
 const response = require('../utils/http-utils');
 
-
-
-exports.addLane = (req, res) => {
-
-    const Lane = new laneSchema({
-        Route: req.body.Route,
-        StartPoint: req.body.StartPoint,
-        EndPoint: req.body.EndPoint,
-        Distance: req.body.Distance
-    });
-    Lane.save().then(data => {
-        res.status(200).json({message: "Data saved successfully", data: data});
-    }).catch(error => {
-        res.status(401).json({message: "Error Found", error: error});
-    })
-
-};
 exports.createDemand = (req, res) => {
 
     const consigner = {
@@ -94,27 +75,19 @@ exports.changeDemandStatus = async (demandId, status, reason) => {
     }
 }
 
-exports.activeDemands = async () => {
+exports.activeDemands = async (startDate,endDate) => {
     try {
-        let demands = await Demands.find({"demandStatus.status": "Active"});
+
+        let demands = await Demands.find({ $and:[{"demandStatus.status": "Active"},{"Time.IndentTime":{$gte:startDate}},{"Time.IndentTime":{$lte:endDate}}]});
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
     }
 };
 
-exports.inactiveDemands = async () => {
+exports.rejectedDemands = async (startDate,endDate) => {
     try {
-        let demands = await Demands.find({"demandStatus.status":{$ne: "Active"}});
-        return response.Ok(demands);
-    } catch (e) {
-        return response.BadRequest(e);
-    }
-};
-
-exports.rejectedDemands = async () => {
-    try {
-        let demands = await Demands.find({"demandStatus.status":"Rejected"});
+        let demands = await Demands.find({ $and:[{"demandStatus.status": "Rejected"},{"Time.IndentTime":{$gte:startDate}},{"Time.IndentTime":{$lte:endDate}}]});
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
@@ -123,7 +96,7 @@ exports.rejectedDemands = async () => {
 
 exports.pendingDemands = async () => {
     try {
-        let demands = await Demands.find({"demandStatus.status":"Pending"});
+        let demands = await Demands.find({ $and:[{"demandStatus.status": "Pending"},{"Time.IndentTime":{$gte:startDate}},{"Time.IndentTime":{$lte:endDate}}]});
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
@@ -132,7 +105,7 @@ exports.pendingDemands = async () => {
 
 exports.completedDemands = async () => {
     try {
-        let demands = await Demands.find({"demandStatus.status":"Completed"});
+        let demands = await Demands.find({ $and:[{"demandStatus.Completed": "Active"},{"Time.IndentTime":{$gte:startDate}},{"Time.IndentTime":{$lte:endDate}}]});
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
@@ -141,19 +114,10 @@ exports.completedDemands = async () => {
 
 exports.allDemands = async () => {
     try {
-        let demands = await Demands.find({});
+        let demands = await Demands.find({ $and:[{"Time.IndentTime":{$gte:startDate}},{"Time.IndentTime":{$lte:endDate}}]});
         return response.Ok(demands);
     } catch (e) {
         return response.BadRequest(e);
     }
 };
 
-exports.getLanes =async () =>{
-    try{
-        let Lanes =await laneSchema.find({});
-        return response.Ok(Lanes);
-    }
-    catch(e){
-        return response.BadRequest(e);
-    }
-};
