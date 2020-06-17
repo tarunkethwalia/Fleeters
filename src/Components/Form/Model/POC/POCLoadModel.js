@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import "./POCModel.css";
-import {Modal} from 'react-bootstrap';
+import "./POCUnloadModel.css";
+import $ from 'jquery';
 
-class POCModel extends Component {
+class POCLoadModel extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -29,24 +29,18 @@ class POCModel extends Component {
     }
 
     handleSubmit = () => {
-        this.props.pocfunction({Name: this.state.POCName, PhoneNo: this.state.POCPhoneArr});
+        this.props.pocfunction({Name: this.state.POCName, PhoneNo: this.state.POCPhoneArr}, 1);
         this.setState({
             ...this.state,
             POCPhoneArr: []
         });
-        this.props.onHide();
+        document.getElementById('POCName').value = '';
+        $('.modal-overlay').click();
     }
 
     render() {
         return (
-            <Modal
-                {...this.props}
-                show={this.props.show}
-                size="xl"
-                // onHide={() => setShow(false)}
-                dialogClassName="modal-90w"
-                className="modelAlbum"
-            >
+            <div id="modalPOCLoad" className="modal modal-fixed-footer">
                 <div className="POCWrapper">
                     <div className="input-field some">
                         <input type="text" id="POCName" className="POCName"
@@ -58,25 +52,25 @@ class POCModel extends Component {
                                onChange={this.addingPOCData}/>
                         <label htmlFor="POCPhone">Phone No:</label>
                         <div className="buttonFlex">
-                            <button className="btn" onClick={this.handlePOCArray}>Add Phone</button>
+                            <span className="btn" onClick={this.handlePOCArray}>Add Phone</span>
                         </div>
                     </div>
                     <div className="POCSubmitBtn">
-                        <button onClick={this.handleSubmit}>Add POC</button>
+                        <button className='btn' onClick={this.handleSubmit}>Add POC</button>
                     </div>
                 </div>
                 <div className="showPhone">
                     {
-                        this.state.POCPhoneArr.map(Phone=>{
+                        this.state.POCPhoneArr.map(Phone => {
                             return (
                                 <p>{Phone}</p>
                             )
                         })
                     }
                 </div>
-            </Modal>
+            </div>
         );
     }
 }
 
-export default POCModel;
+export default POCLoadModel;

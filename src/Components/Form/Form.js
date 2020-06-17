@@ -10,14 +10,30 @@ import laneService from "../../Services/laneService";
 import ConsignerModel from "./Model/Consigner/ConsignerModel";
 import moment from 'moment';
 import consignerService from "../../Services/consignerService";
+import POCLoadModel from "./Model/POC/POCLoadModel";
+import POCUnloadModel from "./Model/POC/POCUnloadModel";
 
 class Form extends Component {
     constructor(props) {
         super(props);
         this.selectRoutes = [];
         this.selectConsigner = [];
+        this.addressObj = {
+            Address: '',
+            POC: []
+        }
 
         this.consigner = {};
+        this.time = {
+            IndentTime: '',
+            ClosingTime: '',
+            LoadingTime: '',
+            TAT: ''
+        }
+        this.address = {
+            LoadingAddress: [],
+            UnLoadingAddress: []
+        }
         this.state = {
             suggestions: [],    //selectLane
             consignersSuggestions: [],  //selectConsigner
@@ -25,25 +41,27 @@ class Form extends Component {
             consignerValue: '',  //selectConsigner
             text: '',   //selectLane
             consignerText: '',   //selectConsigner
+            showLaneModel: false,   //Lane Model
             startingPoint: '',    //disabled Lane
             endingPoint: '',    //disabled Lane
             distance: '',    //disabled Lane
-            showModel: false,   //Consigner Model
-            showLaneModel: false,   //Lane Model
             lanes: [],  //Lanes
-            consigners: [],
-            time: null,
+            consigners: [],     // Consigners
+            loadAddress: '',    //Loading Address
+            POCLoadArr: [],     //Loading Address POC
+            LoadingAddress: [],     //Loading Address Array
             HQ: false
         }
     }
 
     componentDidMount() {
         const time = store.getState().time;
-
-        this.setState({
-            ...this.state,
-            time: time
-        });
+        this.time = {
+            ...this.time,
+            IndentTime: time.indentTime,
+            ClosingTime: time.closingTime,
+            LoadingTime: time.loadingTime
+        }
 
         laneService.getLanes().then(data => {
             const lanes = data.data.data;
@@ -60,7 +78,6 @@ class Form extends Component {
         }, error => {
             console.error(error);
         });
-
         consignerService.getConsigners().then(data => {
             const consigners = data.data.data;
             const consignersArr = [];
@@ -83,28 +100,70 @@ class Form extends Component {
         if (id === 'indentTime') {
             let times = moment.utc(value).format();
             store.dispatch({type: 'INDENT_TIME', indentTime: times});
+            let indent = store.getState().time.indentTime;
+            this.time = {
+                ...this.time,
+                IndentTime: indent
+            }
         } else if (id === 'closingTime') {
             let times = moment.utc(value).format();
             store.dispatch({type: 'CLOSING_TIME', closingTime: times});
+            let closing = store.getState().time.closingTime;
+            this.time = {
+                ...this.time,
+                ClosingTime: closing
+            }
         } else {
             let times = moment.utc(value).format();
             store.dispatch({type: 'LOADING_TIME', loadingTime: times});
+            let loading = store.getState().time.loadingTime;
+            this.time = {
+                ...this.time,
+                LoadingTime: loading
+            }
         }
     }
 
     // Model Functions
-    hideModel = () => {
-        this.setState({
-            ...this.state,
-            showModel: false
-        });
-    };
     hideLaneModel = () => {
         this.setState({
             ...this.state,
             showLaneModel: false
         });
     };
+
+    //Address Functions
+    handlePOCDetails = (POCObj, id) => {
+        if (id === 1) {
+            this.setState({
+                ...this.state,
+                POCLoadArr: [...this.state.POCLoadArr, POCObj]
+            });
+        }
+    }
+    addStoppage = () => {
+        this.addressObj = {
+            Address: this.state.loadAddress,
+            POC: this.state.POCLoadArr
+        };
+        this.address = {
+            LoadingAddress: [...this.address.LoadingAddress, this.addressObj]
+        };
+        this.setState({
+            ...this.state,
+            LoadingAddress: [...this.state.LoadingAddress, this.addressObj],
+            POCLoadArr: []
+        });
+        document.getElementById('loadAddress').value = '';
+    }
+
+    //Input Functions
+    handleChange = (e) => {
+        this.setState({
+            ...this.state,
+            [e.target.id]: e.target.value
+        });
+    }
 
     // Selection Functions
     onHandleConsignerChange = (e) => {
@@ -139,15 +198,14 @@ class Form extends Component {
     suggestionConsignerSelected = (value) => {
         let cons = value.split(' ');
         let consName = cons[0];
-        let consPhone = cons[cons.length-1];
-        this.state.consigners.map(consigner=>{
+        let consPhone = cons[cons.length - 1];
+        this.state.consigners.map(consigner => {
             let splitName = consigner.Name.split(' ');
             let Phone = consigner.PhoneNo.indexOf(consPhone);
             if (splitName === consName && Phone !== -1) {
                 this.consigner = consigner;
             }
         });
-        console.log(value);
     }
     suggestionSelected(value) {
         let Sp = null;
@@ -178,7 +236,8 @@ class Form extends Component {
         }
         return (
             <ul>
-                {consignersSuggestions.map((item) => <li onClick={() => this.suggestionConsignerSelected(item)}>{item}</li>)}
+                {consignersSuggestions.map((item) => <li
+                    onClick={() => this.suggestionConsignerSelected(item)}>{item}</li>)}
             </ul>
         );
     }
@@ -205,7 +264,13 @@ class Form extends Component {
                 <LaneModel show={this.state.showLaneModel} onHide={() => this.hideLaneModel()}/>
 
                 {/*Consigner Model*/}
-                <ConsignerModel show={this.state.showModel} onHide={() => this.hideModel()}/>
+                <ConsignerModel/>
+
+                {/*POC Load Model*/}
+                <POCLoadModel pocfunction={this.handlePOCDetails}/>
+
+                {/*POC Unload Model*/}
+                <POCUnloadModel/>
 
                 {/*Wrapper*/}
                 <div className="formFlex">
@@ -245,15 +310,13 @@ class Form extends Component {
                                         </div>
                                         <div className="input-field some2">
                                             <input type="text" id="autocomplete-input2" className="autocomplete2"
-                                                   onChange={this.onHandleConsignerChange} autoComplete="off" />
+                                                   onChange={this.onHandleConsignerChange} autoComplete="off"/>
                                             <label htmlFor="autocomplete-input2">Select Consigner</label>
                                             {this.renderConsignerSuggestions()}
                                             <div className="buttonFlex">
                                                 <span className="waves-effect waves-light btn">Edit</span>
-                                                <span className="btn" onClick={() => {
-                                                    this.setState({...this.state, showModel: true})
-                                                }}> Add
-                                                </span>
+                                                <a className="waves-effect waves-light btn modal-trigger"
+                                                   href="#consignerModal">Add</a>
                                             </div>
                                         </div>
                                         {/*<div className="input-field"></div>*/}
@@ -299,7 +362,7 @@ class Form extends Component {
                                     </div>
                                     <div className="timingsBody2">
                                         <div className="input-field">
-                                            <input id="TAT" type="number" className="validate"/>
+                                            <input id="TAT" type="number" className="validate" min='0'/>
                                             <label htmlFor="TAT">TAT</label>
                                         </div>
                                     </div>
@@ -316,37 +379,47 @@ class Form extends Component {
                                     <div className="addressBody">
                                         <div className="loadAddressBody">
                                             <div className="input-field">
-                                                <input id="load-address" type="text" className="validate"/>
-                                                <label htmlFor="load-address">Loading Address</label>
+                                                <input id="loadAddress" type="text" className="validate"
+                                                       onChange={this.handleChange} />
+                                                <label htmlFor="loadAddress">Loading Address</label>
                                             </div>
                                             <div className="addressFlex">
                                                 <div className="addressPOCHeading">
                                                     <h6>POC</h6>
                                                 </div>
-                                                <button className="waves-effect waves-light btn">Add POC</button>
+                                                <a className="waves-effect waves-light btn modal-trigger"
+                                                   href="#modalPOCLoad">Add POC</a>
                                             </div>
                                             <div className="POCDetails">
-                                                <div className="POCDiv">
-                                                    <span className='POCName'>Amit Singh</span>
-                                                    <span>9871917358</span>
-                                                </div>
-                                                <div className="POCDiv">
-                                                    <span className='POCName'>Amit Singh</span>
-                                                    <span>9871917358</span>
-                                                </div>
+                                                {
+                                                    this.state.POCLoadArr.map(poc => {
+                                                        return (
+                                                            <div className="POCDiv">
+                                                                <span className='POCName'>{poc.Name}</span>
+                                                                <span>{poc.PhoneNo[0]}</span>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
                                             </div>
                                             <div className='POCSubmit'>
-                                                <button className="waves-effect waves-light btn">Add Stoppage</button>
+                                                <span className="waves-effect waves-light btn" onClick={this.addStoppage}>Add Stoppage</span>
                                             </div>
                                             <div className="POCFooter">
                                                 <div className="footerHeading">
                                                     <h6>Loading</h6>
                                                 </div>
                                                 <div className="footerBody">
-                                                    <div className="footerDiv">
-                                                        <span className='loadAddress'>Some Dummy address with some dummy data</span>
-                                                        <Link to='/'>View</Link>
-                                                    </div>
+                                                    {
+                                                        this.address.LoadingAddress.map(LA=>{
+                                                            return (
+                                                                <div className="footerDiv">
+                                                                    <span className='loadAddress'>{LA.Address}</span>
+                                                                    <Link to='/'>View</Link>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -359,7 +432,8 @@ class Form extends Component {
                                                 <div className="addressPOCHeading">
                                                     <h6>POC</h6>
                                                 </div>
-                                                <button className="waves-effect waves-light btn">Add POC</button>
+                                                <a className="waves-effect waves-light btn modal-trigger"
+                                                   href="#modalPOCUnload">Add POC</a>
                                             </div>
                                             <div className="POCDetails">
                                                 <div className="POCDiv">
@@ -388,7 +462,7 @@ class Form extends Component {
                                                 </div>
                                             </div>
                                             <div className='POCSubmit'>
-                                                <button className="waves-effect waves-light btn">Add Stoppage</button>
+                                                <span className="waves-effect waves-light btn">Add Stoppage</span>
                                             </div>
                                             <div className="POCFooter">
                                                 <div className="footerHeading">

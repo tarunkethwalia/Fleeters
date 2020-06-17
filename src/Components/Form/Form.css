@@ -18,9 +18,9 @@
 .input-field li{padding: 10px 5px; cursor: pointer;}
 .input-field li:hover{background-color: #49BAA6; color: white;}
 .buttonFlex {width: 100%; display: flex; justify-content: flex-end;}
-.buttonFlex span {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px;}
-.buttonFlex span:hover {color: white;}
-.buttonFlex span:focus {outline: none;}
+.buttonFlex a, .buttonFlex span {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px; text-transform: capitalize; padding-top: -10px;}
+.buttonFlex a:hover, .buttonFlex span:hover {color: white;}
+.buttonFlex a:focus, .buttonFlex span:focus {outline: none;}
 .consignerAutofill {width: 100%; display: flex; justify-content: space-around; margin: 10px 0;}
 .timingsBody {width: 100%; display: flex; justify-content: space-around;}
 .timingsBody2, .countBody {width: 100%;}
@@ -29,9 +29,9 @@
 .loadAddressBody, .unloadAddressBody { width: 46%; display: flex; flex-direction: column;}
 .loadAddressBody .input-field, .unloadAddressBody .input-field { width: 60%;}
 .addressFlex {width: 80%; display: flex; justify-content: space-between;}
-.addressFlex button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px; text-transform: capitalize;}
-.addressFlex button:hover {color: white;}
-.addressFlex button:focus {outline: none;}
+.addressFlex a {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px; text-transform: capitalize;}
+.addressFlex a:hover {color: white;}
+.addressFlex a:focus {outline: none;}
 .addressPOCHeading {display: flex; align-items: center;}
 .addressPOCHeading h6 {margin: 0;}
 .POCDetails {width: 80%; margin: 20px 0; height: 90px; overflow-y: auto; padding: 0 10px;}
@@ -40,9 +40,9 @@
 input[id='disabled'] { font-weight: bold;}
 .POCFooter { width: 80%;}
 .POCSubmit { width: 80%; display: flex; justify-content: flex-end; align-items: center; margin: 0px 0 5px;}
-.POCSubmit button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px; text-transform: capitalize;}
-.POCSubmit button:hover {color: white;}
-.POCSubmit button:focus {outline: none;}
+.POCSubmit span {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px; text-transform: capitalize;}
+.POCSubmit span:hover {color: white;}
+.POCSubmit span:focus {outline: none;}
 .footerBody { width: 100%; height: 90px; overflow-y: auto; padding: 0 10px;}
 .footerDiv { width: 100%; display: flex; justify-content: space-between; height: 30px; align-items: center; font-size: 12px;}
 .footerDiv a {text-decoration: none; list-style: none;}

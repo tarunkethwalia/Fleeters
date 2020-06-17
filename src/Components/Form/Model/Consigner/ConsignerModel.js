@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import "./ConsignerModel.css";
-import {Modal} from 'react-bootstrap';
 import consignerService from "../../../../Services/consignerService";
 
 class ConsignerModel extends Component {
@@ -55,44 +54,12 @@ class ConsignerModel extends Component {
 
     render() {
         return (
-            // <div id="modal2" className="modal">
-            //     <form onSubmit={this.addConsigner}>
-            //         <div className="modal-content">
-            //             <input type="text" id='type' onChange={this.handleConsigner}/>
-            //             <input type="text" id='name' onChange={this.handleConsigner}/>
-            //             <input type="number" id='phoneNo' onChange={this.handleConsigner}/>
-            //             <span className="waves-effect waves-green btn-flat" onClick={this.handlePhone}>Add Phone</span>
-            //             <input type="text" id='address' onChange={this.handleConsigner}/>
-            //             <span className="waves-effect waves-green btn-flat" onClick={this.handleAddress}>Add Address</span>
-            //         </div>
-            //         <div className="modal-footer">
-            //             <button className="modal-close waves-effect waves-green btn-flat">Submit</button>
-            //         </div>
-            //     </form>
-            // </div>
-            <Modal
-                {...this.props}
-                show={this.props.show}
-                size="xl"
-                // onHide={() => setShow(false)}
-                dialogClassName="modal-90w"
-                className="modelAlbum"
-            >
-                <Modal.Header>
-                    <Modal.Title>
-                        <div className="modelHeadWrapper">
-                            <span><h1 className='modelHead'>Consigner</h1></span>
-                            <div className="headButtons">
-                                <i className="fas fa-times" onClick={this.props.onHide}></i>
-                            </div>
-                        </div>
-
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="modelBody">
-                    <h1>Model Body</h1>
-                </Modal.Body>
-            </Modal>
+            <div id="consignerModal" className="modal modal-fixed-footer">
+                <div className="modal-content">
+                    <h4>Modal Header</h4>
+                    <p>A bunch of text</p>
+                </div>
+            </div>
         );
     }
 }
