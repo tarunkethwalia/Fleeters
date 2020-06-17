@@ -26,8 +26,10 @@ class LaneModel extends Component {
         this.setState({
             ...this.state,
             [e.target.id] : e.target.value
+
         });
     }
+
     render() {
         return (
             // <div id="modal1" className="modal">
@@ -45,25 +47,27 @@ class LaneModel extends Component {
             <Modal
                 {...this.props}
                 show={this.props.show}
-                size="xl"
+                size="lg"
                 // onHide={() => setShow(false)}
                 dialogClassName="modal-90w"
-                className="modelAlbum"
+                className="modelLane"
             >
-                <Modal.Header>
-                    <Modal.Title>
-                        <div className="modelHeadWrapper">
-                            <span><h1 className='modelHead'>Lane Model</h1></span>
+
+                        <div id="modal1" className="modelHeadWrapper">
+                            <form onSubmit={this.handleLane}>
+                            <h4 className='modelHead'>Lane</h4>
+                                <div className="modal-info">
+                                    <input placeholder="Starting Point" type="text" id='startPoint' onChange={this.handleLaneChange}/>
+                                    <input placeholder="Ending Point" type="text" id='endPoint' onChange={this.handleLaneChange} />
+                                    <input placeholder="Distance(In Km)" type="number" id='distance' onChange={this.handleLaneChange} />
+                                </div>
                             <div className="headButtons">
-                                <i className="fas fa-times" onClick={this.props.onHide}></i>
+                                <button className="modal-close waves-effect waves-light btn">SUBMIT</button>
                             </div>
+                            </form>
                         </div>
 
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="modelBody">
-                    <h1>Lane Body</h1>
-                </Modal.Body>
+
             </Modal>
         );
     }

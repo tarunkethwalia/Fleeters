@@ -173,7 +173,7 @@ class Form extends Component {
                                         {this.renderSuggestions()}
                                         <div className="buttonFlex">
                                             {/*<button className="waves-effect waves-light btn laneButton" onClick={() => {this.setState({...this.state, showModel : true})}}>Add</button>*/}
-                                            <button className="btn" onClick={ () => {this.setState({...this.state, showModel : true})}}> Add </button>
+                                            <button className="btn" onClick={ () => {this.setState({...this.state, showLaneModel : true})}}> Add </button>
                                         </div>
                                     </div>
                                     <div className="input-field some2">
@@ -182,7 +182,7 @@ class Form extends Component {
                                         <div className="buttonFlex">
                                             <button className="waves-effect waves-light btn">Edit</button>
                                             {/*<button className="waves-effect waves-light btn">Add</button>*/}
-                                            <button className="btn" onClick={ () => {this.setState({...this.state, showLaneModel : true})}}> Add </button>
+                                            <button className="btn" onClick={ () => {this.setState({...this.state, showModel : true})}}> Add </button>
                                         </div>
                                     </div>
                                     {/*<div className="input-field"></div>*/}

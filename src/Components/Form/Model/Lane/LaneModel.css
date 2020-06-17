@@ -1,1 +1,11 @@
-.modal{width: 60%; height: 60vh;}
+.modelLane { margin-top: 70px; display: flex; background-color: white; border-radius: 10px; background-color: rgba(255,255,255,0); height: 40vh; box-shadow: none;}
+.modal-content{border: none; width: 120%; height: 110%;}
+.modal-90w{width: 40%;}
+.headButtons{display: flex; justify-content: center; padding-right: 40px;padding-top: 40px;}
+.headButtons button{background-color: #49BAA6; color: white;height: 30px; font-size: 13px; text-transform: capitalize; margin-left: 20px;}
+.headButtons button:hover {color: white;}
+.headButtons button:focus {outline: none;}
+.modal-info{display: flex; justify-content: center; flex-direction: column; width: 85%; padding-left: 30px; padding-top: 10px;}
+.modal-dialog { width: 40%; height: 50vh;}
+.modelHeadWrapper{ display: flex;flex-direction: column;justify-content: center;padding-left: 25px; padding-top: 10px;}
+.modelHeadWrapper h4{font-size: 22px; font-family: 'Titillium Web', sans-serif;}
