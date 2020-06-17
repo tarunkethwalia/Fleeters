@@ -18,9 +18,9 @@
 .input-field li{padding: 10px 5px; cursor: pointer;}
 .input-field li:hover{background-color: #49BAA6; color: white;}
 .buttonFlex {width: 100%; display: flex; justify-content: flex-end;}
-.buttonFlex button {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px;}
-.buttonFlex button:hover {color: white;}
-.buttonFlex button:focus {outline: none;}
+.buttonFlex span {background-color: #49BAA6; color: white; margin-left: 10px; height: 30px; font-size: 12px;}
+.buttonFlex span:hover {color: white;}
+.buttonFlex span:focus {outline: none;}
 .consignerAutofill {width: 100%; display: flex; justify-content: space-around; margin: 10px 0;}
 .timingsBody {width: 100%; display: flex; justify-content: space-around;}
 .timingsBody2, .countBody {width: 100%;}

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import "./LaneModel.css";
 import {Modal} from 'react-bootstrap';
 import laneService from "../../../../Services/laneService";
+import Swal from "sweetalert2";
 
 class LaneModel extends Component {
     constructor(props) {
@@ -17,8 +18,24 @@ class LaneModel extends Component {
         e.preventDefault();
         laneService.addLane({StartPoint: this.state.startPoint, EndPoint: this.state.endPoint, Distance: this.state.distance, Route: `${this.state.startPoint} - ${this.state.endPoint}`}).then(data=>{
             console.log(data.data.message);
+            Swal.fire({
+                icon: 'success',
+                title: data.data.message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+            this.setState({
+                startPoint: '',
+                endPoint: '',
+                distance: null
+            })
+            this.props.onHide();
         }).catch(error=>{
-            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!'
+            });
         })
     }
 
@@ -32,18 +49,6 @@ class LaneModel extends Component {
 
     render() {
         return (
-            // <div id="modal1" className="modal">
-            //     <form onSubmit={this.handleLane}>
-            //         <div className="modal-content">
-            //             <input type="text" id='startPoint' onChange={this.handleLaneChange}/>
-            //             <input type="text" id='endPoint' onChange={this.handleLaneChange} />
-            //             <input type="number" id='distance' onChange={this.handleLaneChange} />
-            //         </div>
-            //         <div className="modal-footer">
-            //             <button className="modal-close waves-effect waves-green btn-flat">Submit</button>
-            //         </div>
-            //     </form>
-            // </div>
             <Modal
                 {...this.props}
                 show={this.props.show}

@@ -1,7 +1,10 @@
+import moment from "moment";
+
+let times = moment.utc(new Date()).format()
 const initState = {
-    indentTime : 'indentTime',
-    closingTime: 'closingTime',
-    loadingTime: 'loadingTime'
+    indentTime : times,
+    closingTime: times,
+    loadingTime: times
 };
 
 const timeReducer = (state = initState,action) => {
