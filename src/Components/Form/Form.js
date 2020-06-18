@@ -92,7 +92,8 @@ class Form extends Component {
         }
 
         laneService.getLanes().then(data => {
-            const lanes = data.data.data;
+            store.dispatch({type: 'LANE_DATA', lanes: data.data.data});
+            const lanes = store.getState().lane.lanes;
             const routes = [];
             lanes.map(lane => {
                 let route = lane.Route;
@@ -161,6 +162,18 @@ class Form extends Component {
             showLaneModel: false
         });
     };
+    updateLanes = (lanes) => {
+        const routes = [];
+        lanes.map(lane => {
+            let route = lane.Route;
+            routes.push(route);
+        });
+        this.selectRoutes = routes;
+        this.setState({
+            ...this.state,
+            lanes: lanes
+        });
+    }
 
     //Address Functions
     handlePOCDetails = (POCObj, id) => {
@@ -299,7 +312,6 @@ class Form extends Component {
             CP
         });
     }
-
     suggestionSelected(value) {
         let Sp = null;
         let Ep = null;
@@ -337,7 +349,6 @@ class Form extends Component {
             </ul>
         );
     }
-
     renderSuggestions() {
         const {suggestions} = this.state;
         if (suggestions.length === 0) {
@@ -409,7 +420,7 @@ class Form extends Component {
                 <Navbar/>
 
                 {/*Lane Model*/}
-                <LaneModel show={this.state.showLaneModel} onHide={() => this.hideLaneModel()}/>
+                <LaneModel show={this.state.showLaneModel} onHide={() => this.hideLaneModel()} updateLanes={this.updateLanes} />
 
                 {/*Consigner Model*/}
                 <ConsignerModel/>

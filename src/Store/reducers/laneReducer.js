@@ -1,16 +1,16 @@
 const initState = {
-    post: []
+    lanes: []
 };
 
-const postReducer = (state = initState, action) => {
-    if (action.type === "POST_DATA") {
+const laneReducer = (state = initState, action) => {
+    if (action.type === "LANE_DATA") {
         return {
             ...state,
-            post: action.post
+            lanes: action.lanes
         }
     } else {
         return state
     };
 };
 
-export default postReducer;
+export default laneReducer;

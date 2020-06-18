@@ -3,6 +3,7 @@ import "./LaneModel.css";
 import {Modal} from 'react-bootstrap';
 import laneService from "../../../../Services/laneService";
 import Swal from "sweetalert2";
+import store from "../../../../Store/stores/store";
 
 class LaneModel extends Component {
     constructor(props) {
@@ -28,9 +29,15 @@ class LaneModel extends Component {
                 startPoint: '',
                 endPoint: '',
                 distance: null
-            })
+            });
+            laneService.getLanes().then(data=>{
+                store.dispatch({type: 'LANE_DATA', lanes: data.data.data});
+                this.props.updateLanes(data.data.data);
+            },error=>{
+                console.error(error)
+            });
             this.props.onHide();
-        }).catch(error=>{
+        }).catch(()=>{
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
