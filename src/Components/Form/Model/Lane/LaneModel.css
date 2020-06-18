@@ -1,4 +1,4 @@
-.modelLane { margin-top: 70px; display: flex; background-color: white; overflow: hidden!important; width: 28% !important; border-radius: 10px;}
+.modelLane { margin-top: 70px; display: flex; background-color: white; overflow: hidden!important; width: 28% !important; border-radius: 10px; height: 100% !important;}
 .modal-content{margin-top: 15px;margin-left: 5px; padding:0px!important; border: none; height: 100%;}
 .headButtons{display: flex; justify-content: center; padding-right: 40px;padding-top: 40px;}
 .headButtons button{background-color: #49BAA6; color: white;height: 35px; font-size: 13px; text-transform: capitalize; }

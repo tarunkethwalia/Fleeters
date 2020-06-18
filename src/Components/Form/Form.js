@@ -19,7 +19,7 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.selectRoutes = [];
-        this.selectConsigner = [];
+        this.selectConsignor = [];
         this.addressObj = {
             Address: '',
             POC: []
@@ -40,7 +40,7 @@ class Form extends Component {
             UnLoadingAddress: []
         }
         this.vehicle = {
-            vehicleType : '',
+            vehicleType: '',
             Tyres: null,
             Height: null,
             TruckType: '',
@@ -57,24 +57,28 @@ class Form extends Component {
         }
         this.state = {
             suggestions: [],    //selectLane
-            consignersSuggestions: [],  //selectConsigner
-            value: '',  //selectLane
-            consignerValue: '',  //selectConsigner
-            text: '',   //selectLane
-            consignerText: '',   //selectConsigner
+            value: '',          //selectLane
+            text: '',           //selectLane
+            lanes: [],          //Lanes
+            consignors: [],     // Consignors
+            consignorsSuggestions: [],  //selectConsignor
+            consignorValue: '',  //selectConsignor
+            consignorText: '',   //selectConsignor
+            CN: '',              //Consignor Name
+            CT: '',              //Consignor Type
+            CP: [],              //Consignor PhoneNo
+            CA: [],              //Consignor Address
             showLaneModel: false,   //Lane Model
+            showPOCLoadModel: false, //POC Load Model
+            showPOCUnloadModel: false, //POC Unload Model
             startingPoint: '',    //disabled Lane
             endingPoint: '',    //disabled Lane
             distance: '',       //disabled Lane
             route: '',          //disabled Lane
-            lanes: [],  //Lanes
-            consigners: [],     // Consigners
             loadAddress: '',    //Loading Address
-            showPOCLoadModel: false, //POC Load Model
             POCLoadArr: [],     //Loading Address POC
             LoadingAddress: [],     //Loading Address Array
             unloadAddress: '',    //UnLoading Address
-            showPOCUnloadModel: false, //POC Unload Model
             POCUnloadArr: [],     //UnLoading Address POC
             UnLoadingAddress: [],     //UnLoading Address Array
         }
@@ -106,19 +110,21 @@ class Form extends Component {
             console.error(error);
         });
         consignerService.getConsigners().then(data => {
-            const consigners = data.data.data;
-            const consignersArr = [];
-            consigners.map(consigner => {
-                let consignerName = consigner.Name;
-                let consignerNumber = consigner.PhoneNo[0];
-                let consignerDetails = consignerName + ' - ' + consignerNumber;
-                consignersArr.push(consignerDetails);
+            const consignors = data.data.data;
+            const consignorsArr = [];
+            consignors.map(consignor => {
+                let consignorName = consignor.Name;
+                let consignorNumber = consignor.PhoneNo[0];
+                let consignorDetails = consignorName + ' - ' + consignorNumber;
+                consignorsArr.push(consignorDetails);
             });
-            this.selectConsigner = consignersArr;
+            this.selectConsignor = consignorsArr;
             this.setState({
                 ...this.state,
-                consigners: consigners
+                consignors: consignors
             });
+        }, error => {
+            console.error(error);
         });
     }
 
@@ -170,14 +176,12 @@ class Form extends Component {
             lanes: lanes
         });
     }
-
     hidePOCLoadModel = () => {
         this.setState({
             ...this.state,
             showPOCLoadModel: false
         });
     };
-
     hidePOCUnloadModel = () => {
         this.setState({
             ...this.state,
@@ -192,8 +196,7 @@ class Form extends Component {
                 ...this.state,
                 POCLoadArr: [...this.state.POCLoadArr, POCObj]
             });
-        }
-        else {
+        } else {
             this.setState({
                 ...this.state,
                 POCUnloadArr: [...this.state.POCUnloadArr, POCObj]
@@ -266,17 +269,17 @@ class Form extends Component {
     }
 
     // Selection Functions
-    onHandleConsignerChange = (e) => {
+    onHandleConsignorChange = (e) => {
         const value = e.target.value;
         let suggestions = [];
         if (value.length > 0) {
             const regex = new RegExp(`^${value}`, 'i');
-            suggestions = this.selectConsigner.sort().filter(v => regex.test(v));
+            suggestions = this.selectConsignor.sort().filter(v => regex.test(v));
         }
         this.setState(() => ({
                 ...this.state,
-                consignersSuggestions: suggestions,
-                consignerText: value
+                consignorsSuggestions: suggestions,
+                consignorText: value
             }
         ));
     }
@@ -295,16 +298,29 @@ class Form extends Component {
         ));
     }
 
-    suggestionConsignerSelected = (value) => {
+    suggestionConsignorSelected = (value) => {
         let cons = value.split(' ');
         let consName = cons[0];
         let consPhone = cons[cons.length - 1];
-        this.state.consigners.map(consigner => {
-            let splitName = consigner.Name.split(' ');
-            let Phone = consigner.PhoneNo.indexOf(consPhone);
-            if (splitName === consName && Phone !== -1) {
-                this.consigner = consigner;
+        let CN, CT, CP, CA = null;
+        this.state.consignors.map(consignor => {
+            let splitName = consignor.Name.split(' ');
+            let Phone = consignor.PhoneNo.toString().indexOf(consPhone);
+            if (splitName[0] === consName && Phone !== -1) {
+                CN = consignor.Name;
+                CT = consignor.Type;
+                CP = consignor.PhoneNo;
+                CA = consignor.Address;
             }
+        });
+        this.setState({
+            ...this.state,
+            consignorText: value,
+            consignorsSuggestions: [],
+            CN,
+            CT,
+            CP,
+            CA
         });
     }
     suggestionSelected(value) {
@@ -332,15 +348,15 @@ class Form extends Component {
         }));
     }
 
-    renderConsignerSuggestions() {
-        const {consignersSuggestions} = this.state;
-        if (consignersSuggestions.length === 0) {
+    renderConsignorSuggestions() {
+        const {consignorsSuggestions} = this.state;
+        if (consignorsSuggestions.length === 0) {
             return null;
         }
         return (
             <ul>
-                {consignersSuggestions.map((item) => <li
-                    onClick={() => this.suggestionConsignerSelected(item)}>{item}</li>)}
+                {consignorsSuggestions.map((item) => <li
+                    onClick={() => this.suggestionConsignorSelected(item)}>{item}</li>)}
             </ul>
         );
     }
@@ -359,7 +375,25 @@ class Form extends Component {
     //Submit Demand Function
     submitDemand = (e) => {
         e.preventDefault();
-        demandService.createDemands({Consigner: this.consigner, Lane: {StartPoint: this.state.startingPoint, EndPoint: this.state.endingPoint, Distance: this.state.distance, Route: this.state.route}, Address: this.address, Item: this.item, Time: this.time, Vehicle: this.vehicle, Freight: this.freight}).then(data=>{
+        demandService.createDemands({
+            Consigner: {
+                Name: this.state.CN,
+                Type: this.state.CT,
+                Address: this.state.CA,
+                PhoneNo: this.state.CP
+            },
+            Lane: {
+                StartPoint: this.state.startingPoint,
+                EndPoint: this.state.endingPoint,
+                Distance: this.state.distance,
+                Route: this.state.route
+            },
+            Address: this.address,
+            Item: this.item,
+            Time: this.time,
+            Vehicle: this.vehicle,
+            Freight: this.freight
+        }).then(data => {
             console.log(data.data.data);
             Swal.fire({
                 title: 'Are you sure?',
@@ -379,7 +413,7 @@ class Form extends Component {
                     });
                 }
             })
-        }).catch(error=>{
+        }).catch(error => {
             console.error(error);
             Swal.fire({
                 icon: 'error',
@@ -390,23 +424,26 @@ class Form extends Component {
     }
 
     render() {
-        const {text} = this.state;
+        const {text,consignorText} = this.state;
         return (
             <div className="Form">
                 {/*Navbar*/}
                 <Navbar/>
 
                 {/*Lane Model*/}
-                <LaneModel show={this.state.showLaneModel} onHide={() => this.hideLaneModel()} updateLanes={this.updateLanes} />
+                <LaneModel show={this.state.showLaneModel} onHide={() => this.hideLaneModel()}
+                           updateLanes={this.updateLanes}/>
 
-                {/*Consigner Model*/}
+                {/*Consignor Model*/}
                 <ConsignerModel/>
 
                 {/*POC Load Model*/}
-                <POCLoadModel pocfunction={this.handlePOCDetails} show={this.state.showPOCLoadModel} onHide={() => this.hidePOCLoadModel()}/>
+                <POCLoadModel pocfunction={this.handlePOCDetails} show={this.state.showPOCLoadModel}
+                              onHide={() => this.hidePOCLoadModel()}/>
 
                 {/*POC Unload Model*/}
-                <POCUnloadModel pocfunction={this.handlePOCDetails} show={this.state.showPOCUnloadModel} onHide={() => this.hidePOCUnloadModel()}/>
+                <POCUnloadModel pocfunction={this.handlePOCDetails} show={this.state.showPOCUnloadModel}
+                                onHide={() => this.hidePOCUnloadModel()}/>
 
                 {/*Wrapper*/}
                 <div className="formFlex">
@@ -445,14 +482,14 @@ class Form extends Component {
                                             </div>
                                         </div>
                                         <div className="input-field some2">
-                                            <input type="text" id="autocomplete-input2" className="autocomplete2"
-                                                   onChange={this.onHandleConsignerChange} autoComplete="off"/>
-                                            <label htmlFor="autocomplete-input2">Select Consigner</label>
-                                            {this.renderConsignerSuggestions()}
+                                            <input value={consignorText} type="text" id="autocomplete-input2" className="autocomplete2"
+                                                   onChange={this.onHandleConsignorChange} autoComplete="off"/>
+                                            <label htmlFor="autocomplete-input2">Select Consignor</label>
+                                            {this.renderConsignorSuggestions()}
                                             <div className="buttonFlex">
                                                 <span className="waves-effect waves-light btn">Edit</span>
                                                 <span className="waves-effect waves-light btn modal-trigger"
-                                                   href="#consignerModal">Add</span>
+                                                      href="#consignerModal">Add</span>
                                             </div>
                                         </div>
                                         {/*<div className="input-field"></div>*/}
@@ -498,7 +535,8 @@ class Form extends Component {
                                     </div>
                                     <div className="timingsBody2">
                                         <div className="input-field">
-                                            <input id="TAT" type="number" className="validate" min='0' onChange={this.handleTimeChange}/>
+                                            <input id="TAT" type="number" className="validate" min='0'
+                                                   onChange={this.handleTimeChange}/>
                                             <label htmlFor="TAT">TAT</label>
                                         </div>
                                     </div>
@@ -516,7 +554,7 @@ class Form extends Component {
                                         <div className="loadAddressBody">
                                             <div className="input-field">
                                                 <input id="loadAddress" type="text" className="validate"
-                                                       onChange={this.handleChange} />
+                                                       onChange={this.handleChange}/>
                                                 <label htmlFor="loadAddress">Loading Address</label>
                                             </div>
                                             <div className="addressFlex">
@@ -541,7 +579,8 @@ class Form extends Component {
                                                 }
                                             </div>
                                             <div className='POCSubmit'>
-                                                <span className="waves-effect waves-light btn" onClick={this.addStoppage}>Add Stoppage</span>
+                                                <span className="waves-effect waves-light btn"
+                                                      onClick={this.addStoppage}>Add Stoppage</span>
                                             </div>
                                             <div className="POCFooter">
                                                 <div className="footerHeading">
@@ -549,7 +588,7 @@ class Form extends Component {
                                                 </div>
                                                 <div className="footerBody">
                                                     {
-                                                        this.address.LoadingAddress.map(LA=>{
+                                                        this.address.LoadingAddress.map(LA => {
                                                             return (
                                                                 <div className="footerDiv">
                                                                     <span className='loadAddress'>{LA.Address}</span>
@@ -563,7 +602,8 @@ class Form extends Component {
                                         </div>
                                         <div className="unloadAddressBody">
                                             <div className="input-field">
-                                                <input id="unloadAddress" type="text" className="validate" onChange={this.handleChange}/>
+                                                <input id="unloadAddress" type="text" className="validate"
+                                                       onChange={this.handleChange}/>
                                                 <label htmlFor="unloadAddress">Unloading Address</label>
                                             </div>
                                             <div className="addressFlex">
@@ -588,7 +628,8 @@ class Form extends Component {
                                                 }
                                             </div>
                                             <div className='POCSubmit'>
-                                                <span className="waves-effect waves-light btn" onClick={this.addStoppage2}>Add Stoppage</span>
+                                                <span className="waves-effect waves-light btn"
+                                                      onClick={this.addStoppage2}>Add Stoppage</span>
                                             </div>
                                             <div className="POCFooter">
                                                 <div className="footerHeading">
@@ -596,7 +637,7 @@ class Form extends Component {
                                                 </div>
                                                 <div className="footerBody">
                                                     {
-                                                        this.address.UnLoadingAddress.map(LA=>{
+                                                        this.address.UnLoadingAddress.map(LA => {
                                                             return (
                                                                 <div className="footerDiv">
                                                                     <span className='loadAddress'>{LA.Address}</span>
@@ -618,43 +659,52 @@ class Form extends Component {
                                     </div>
                                     <div className="vehicleInfo">
                                         <div className="input-field">
-                                            <input type="text" id="vehicleType" className="autocomplete" onChange={this.handleVehicleChange} />
+                                            <input type="text" id="vehicleType" className="autocomplete"
+                                                   onChange={this.handleVehicleChange}/>
                                             <label htmlFor="vehicleType">Vehicle Type</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Height" className="autocomplete2" onChange={this.handleVehicleChange} min='0'/>
+                                            <input type="number" id="Height" className="autocomplete2"
+                                                   onChange={this.handleVehicleChange} min='0'/>
                                             <label htmlFor="Height">Feets</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Tyres" className="autocomplete2" onChange={this.handleVehicleChange} min='0'/>
+                                            <input type="number" id="Tyres" className="autocomplete2"
+                                                   onChange={this.handleVehicleChange} min='0'/>
                                             <label htmlFor="Tyres">Tyres</label>
                                         </div>
                                     </div>
                                     <div className="vehicleInfo">
                                         <div className="input-field">
-                                            <input type="text" id="TruckType" className="autocomplete" onChange={this.handleVehicleChange}/>
+                                            <input type="text" id="TruckType" className="autocomplete"
+                                                   onChange={this.handleVehicleChange}/>
                                             <label htmlFor="TruckType">Vehicle Size</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="text" id="Commodity" className="autocomplete2" onChange={this.handleItemChange}/>
+                                            <input type="text" id="Commodity" className="autocomplete2"
+                                                   onChange={this.handleItemChange}/>
                                             <label htmlFor="Commodity">Item Type</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Tonnage" className="autocomplete2" onChange={this.handleItemChange} min='0'/>
+                                            <input type="number" id="Tonnage" className="autocomplete2"
+                                                   onChange={this.handleItemChange} min='0'/>
                                             <label htmlFor="Tonnage">Tonnage</label>
                                         </div>
                                     </div>
                                     <div className="vehicleInfo">
                                         <div className="input-field">
-                                            <input type="number" id="Amount" className="autocomplete" min='0' onChange={this.handleFreightChange}/>
+                                            <input type="number" id="Amount" className="autocomplete" min='0'
+                                                   onChange={this.handleFreightChange}/>
                                             <label htmlFor="Amount">Freight</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Advance" className="autocomplete2" min='0' onChange={this.handleFreightChange}/>
+                                            <input type="number" id="Advance" className="autocomplete2" min='0'
+                                                   onChange={this.handleFreightChange}/>
                                             <label htmlFor="Advance">Advance</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Percentage" className="autocomplete2" min='0' onChange={this.handleFreightChange}/>
+                                            <input type="number" id="Percentage" className="autocomplete2" min='0'
+                                                   onChange={this.handleFreightChange}/>
                                             <label htmlFor="Percentage">Percentage</label>
                                         </div>
                                     </div>
@@ -680,7 +730,7 @@ class Form extends Component {
                                     </div>
                                     <div className="countBody">
                                         <div className="input-field">
-                                            <input id="count" type="number" className="validate" min='1' />
+                                            <input id="count" type="number" className="validate" min='1'/>
                                             <label htmlFor="count">Count</label>
                                         </div>
                                     </div>
