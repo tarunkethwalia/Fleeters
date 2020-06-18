@@ -429,8 +429,8 @@ class Form extends Component {
                                             {this.renderConsignerSuggestions()}
                                             <div className="buttonFlex">
                                                 <span className="waves-effect waves-light btn">Edit</span>
-                                                <a className="waves-effect waves-light btn modal-trigger"
-                                                   href="#consignerModal">Add</a>
+                                                <span className="waves-effect waves-light btn modal-trigger"
+                                                   href="#consignerModal">Add</span>
                                             </div>
                                         </div>
                                         {/*<div className="input-field"></div>*/}
@@ -501,8 +501,8 @@ class Form extends Component {
                                                 <div className="addressPOCHeading">
                                                     <h6>POC</h6>
                                                 </div>
-                                                <a className="waves-effect waves-light btn modal-trigger"
-                                                   href="#modalPOCLoad">Add POC</a>
+                                                <span className="waves-effect waves-light btn modal-trigger"
+                                                   href="#modalPOCLoad">Add POC</span>
                                             </div>
                                             <div className="POCDetails">
                                                 {
@@ -546,8 +546,8 @@ class Form extends Component {
                                                 <div className="addressPOCHeading">
                                                     <h6>POC</h6>
                                                 </div>
-                                                <a className="waves-effect waves-light btn modal-trigger"
-                                                   href="#modalPOCUnload">Add POC</a>
+                                                <span className="waves-effect waves-light btn modal-trigger"
+                                                   href="#modalPOCUnload">Add POC</span>
                                             </div>
                                             <div className="POCDetails">
                                                 {
@@ -654,7 +654,7 @@ class Form extends Component {
                                     </div>
                                     <div className="countBody">
                                         <div className="input-field">
-                                            <input id="count" type="number" className="validate"/>
+                                            <input id="count" type="number" className="validate" min='1' />
                                             <label htmlFor="count">Count</label>
                                         </div>
                                     </div>

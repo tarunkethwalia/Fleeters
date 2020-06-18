@@ -4,7 +4,7 @@ import env from "../environment";
 class demandService {
 
     static getDemands = () => {
-        return axios.get(`${env.API}activeDemands`);
+        return axios.get(`${env.API}getActiveDemands`);
     }
 
     static createDemands = (data) => {
