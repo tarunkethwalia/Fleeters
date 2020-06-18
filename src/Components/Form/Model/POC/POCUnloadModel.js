@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import "./POCUnloadModel.css";
 import $ from 'jquery';
+import {Modal} from "react-bootstrap";
 
 class POCUnloadModel extends Component {
     constructor(props) {
@@ -40,8 +41,18 @@ class POCUnloadModel extends Component {
 
     render() {
         return (
-            <div id="modalPOCUnload" className="modal modal-fixed-footer">
-                <div className="POCWrapper">
+            <Modal
+                {...this.props}
+                show={this.props.show}
+                size="lg"
+                // onHide={() => setShow(false)}
+                dialogClassName="modal-content"
+                className="modelLane"
+            >
+                <div id="modalPOCUnload" className="POCWrapper">
+                    <form onSubmit={this.handleSubmit}>
+                        <h4 className='unloadModelHead'>Unloading POC</h4>
+                        <div className="unload-modal-info">
                     <div className="input-field some">
                         <input type="text" id="POCNameUA" className="POCNameUA"
                                onChange={this.addingPOCData}/>
@@ -51,24 +62,26 @@ class POCUnloadModel extends Component {
                         <input type="number" id="POCPhoneUA" className="POCPhoneUA"
                                onChange={this.addingPOCData}/>
                         <label htmlFor="POCPhoneUA">Phone No:</label>
-                        <div className="buttonFlex">
+                        <div className="buttonFlex unloadPOC">
                             <span className="btn" onClick={this.handlePOCArray}>Add Phone</span>
                         </div>
                     </div>
+                            <div className="showPhone">
+                                {
+                                    this.state.POCPhoneArrUA.map(Phone => {
+                                        return (
+                                            <p>{Phone}</p>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </div>
                     <div className="POCSubmitBtn">
-                        <button className='btn' onClick={this.handleSubmit}>Add POC</button>
+                        <button className='btn'>Add POC</button>
                     </div>
+                    </form>
                 </div>
-                <div className="showPhone">
-                    {
-                        this.state.POCPhoneArrUA.map(Phone => {
-                            return (
-                                <p>{Phone}</p>
-                            )
-                        })
-                    }
-                </div>
-            </div>
+            </Modal>
         );
     }
 }
