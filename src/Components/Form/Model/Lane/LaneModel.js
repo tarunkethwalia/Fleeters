@@ -61,20 +61,32 @@ class LaneModel extends Component {
                 show={this.props.show}
                 size="lg"
                 // onHide={() => setShow(false)}
-                dialogClassName="modal-90w"
+                dialogClassName="modal-content"
                 className="modelLane"
             >
 
-                        <div id="modal1" className="modelHeadWrapper">
+                        <div id="modalLane" className="modelHeadWrapper">
                             <form onSubmit={this.handleLane}>
                             <h4 className='modelHead'>Lane</h4>
                                 <div className="modal-info">
-                                    <input placeholder="Starting Point" type="text" id='startPoint' onChange={this.handleLaneChange}/>
-                                    <input placeholder="Ending Point" type="text" id='endPoint' onChange={this.handleLaneChange} />
-                                    <input placeholder="Distance(In Km)" type="number" id='distance' onChange={this.handleLaneChange} />
+                                    <div className="input-field points">
+                                        <input type="text" id="startPoint" className="startPoint"
+                                               onChange={this.handleLaneChange}/>
+                                        <label htmlFor="startPoint">Starting Point:</label>
+                                    </div>
+                                    <div className="input-field points">
+                                        <input type="text" id="endPoint" className="endPoint"
+                                               onChange={this.handleLaneChange}/>
+                                        <label htmlFor="endPoint">Ending Point:</label>
+                                    </div>
+                                    <div className="input-field points">
+                                        <input type="text" id="distance" className="distance"
+                                               onChange={this.handleLaneChange}/>
+                                        <label htmlFor="distance">Distance:</label>
+                                    </div>
                                 </div>
                             <div className="headButtons">
-                                <button className="modal-close waves-effect waves-light btn">SUBMIT</button>
+                                <button className="modal-close waves-effect waves-light btn">Submit</button>
                             </div>
                             </form>
                         </div>

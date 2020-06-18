@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import "./POCUnloadModel.css";
+import "./POCLoadModel.css";
 import $ from 'jquery';
+import {Modal} from "react-bootstrap";
 
 class POCLoadModel extends Component {
     constructor(props) {
@@ -34,41 +35,50 @@ class POCLoadModel extends Component {
             ...this.state,
             POCPhoneArr: []
         });
-        document.getElementById('POCName').value = '';
-        $('.modal-overlay').click();
+       this.props.onHide();
     }
 
     render() {
         return (
-            <div id="modalPOCLoad" className="modal modal-fixed-footer">
-                <div className="POCWrapper">
-                    <div className="input-field some">
-                        <input type="text" id="POCName" className="POCName"
-                               onChange={this.addingPOCData}/>
-                        <label htmlFor="POCName">POC Name:</label>
-                    </div>
-                    <div className="input-field some">
-                        <input type="number" id="POCPhone" className="POCPhone" id='POCPhone'
-                               onChange={this.addingPOCData}/>
-                        <label htmlFor="POCPhone">Phone No:</label>
-                        <div className="buttonFlex">
-                            <span className="btn" onClick={this.handlePOCArray}>Add Phone</span>
+            <Modal
+                {...this.props}
+                show={this.props.show}
+                size="lg"
+                // onHide={() => setShow(false)}
+                dialogClassName="modal-content"
+                className="modelLane"
+            >
+                <div id="modalPOCLoad" className="POCWrapper">
+                        <h4 className='loadModelHead'>Loading POC</h4>
+                        <div className="load-modal-info">
+                            <div className="input-field some">
+                                <input type="text" id="POCName" className="POCName"
+                                       onChange={this.addingPOCData}/>
+                                <label htmlFor="POCName">POC Name:</label>
+                            </div>
+                            <div className="input-field some">
+                                <input type="number" id="POCPhone" className="POCPhone"
+                                       onChange={this.addingPOCData}/>
+                                <label htmlFor="POCPhone">Phone No:</label>
+                                <div className="buttonFlex loadPOC">
+                                    <span className="btn" onClick={this.handlePOCArray}>Add Phone</span>
+                                </div>
+                            </div>
+                            <div className="showPhone">
+                                {
+                                    this.state.POCPhoneArr.map(Phone => {
+                                        return (
+                                            <p>{Phone}</p>
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <div className="POCSubmitBtn">
-                        <button className='btn' onClick={this.handleSubmit}>Add POC</button>
-                    </div>
+                        <div className="POCSubmitBtn">
+                            <button className='btn' onClick={this.handleSubmit}>Add POC</button>
+                        </div>
                 </div>
-                <div className="showPhone">
-                    {
-                        this.state.POCPhoneArr.map(Phone => {
-                            return (
-                                <p>{Phone}</p>
-                            )
-                        })
-                    }
-                </div>
-            </div>
+            </Modal>
         );
     }
 }

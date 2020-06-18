@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import "./ConsignerModel.css";
 import consignerService from "../../../../Services/consignerService";
+import {Modal} from "react-bootstrap";
 
 class ConsignerModel extends Component {
     constructor(props) {
@@ -54,14 +55,71 @@ class ConsignerModel extends Component {
 
     render() {
         return (
-            <div id="consignerModal" className="modal modal-fixed-footer">
-                <div className="modal-content">
-                    <h4>Modal Header</h4>
-                    <p>A bunch of text</p>
+            <Modal
+                {...this.props}
+                show={this.props.show}
+                size="lg"
+                // onHide={() => setShow(false)}
+                dialogClassName="modal-content"
+                className="modelLane"
+            >
+                <div id="modalConsigner" className="consignerWrapper">
+                    <form onSubmit={this.handleSubmit}>
+                        <h4 className='consignerModelHead'>Consigner</h4>
+                        <div className="consigner-modal-info">
+                            <div className="input-field some">
+                                <input type="text" id="name" className="name"
+                                       onChange={this.handleConsigner}/>
+                                <label htmlFor="name">Name:</label>
+                            </div>
+                            <div className="input-field some">
+                                <input type="text" id="type" className="type"
+                                       onChange={this.handleConsigner}/>
+                                <label htmlFor="type">Type:</label>
+                            </div>
+                            <div className="input-field some">
+                                <input type="number" id="phoneNo" className="phoneNo"
+                                       onChange={this.handleConsigner}/>
+                                <label htmlFor="phoneNo">Phone No:</label>
+                                <div className="buttonFlex consignerPhone">
+                                    <span className="btn" onClick={this.handlePhone}>Add Phone</span>
+                                </div>
+                            </div>
+                            <div className="input-field some">
+                                <input type="number" id="address" className="address"
+                                       onChange={this.handleConsigner}/>
+                                <label htmlFor="address">Address:</label>
+                                <div className="buttonFlex consignerAddress">
+                                    <span className="btn" onClick={this.handleAddress}>Add Address</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="showPhone">
+                            {
+                                this.state.phoneArr.map(Phone => {
+                                    return (
+                                        <p>{Phone}</p>
+                                    )
+                                })
+                            }
+                        </div>
+                        <div className="showAddress">
+                            {
+                                this.state.addressArr.map(Phone => {
+                                    return (
+                                        <p>{Phone}</p>
+                                    )
+                                })
+                            }
+                        </div>
+                <div className="consignerSubmitBtn">
+                    <button className='btn'>Submit</button>
                 </div>
-            </div>
-        );
+            </form>
+    </div>
+    </Modal>
+    );
     }
-}
+    }
 
-export default ConsignerModel;
+    export default ConsignerModel;
