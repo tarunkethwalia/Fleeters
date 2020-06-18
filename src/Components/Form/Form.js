@@ -29,13 +29,6 @@ class Form extends Component {
             POC: []
         };
 
-
-        this.consigner = {
-            Name: 'Tester',
-            Type: 'Enterprise',
-            Address: ['221B Baker Street'],
-            PhoneNo: [1234567890]
-        };
         this.time = {
             IndentTime: '',
             ClosingTime: '',
@@ -47,7 +40,7 @@ class Form extends Component {
             UnLoadingAddress: []
         }
         this.vehicle = {
-            vehicleType : '',
+            vehicleType: '',
             Tyres: null,
             Height: null,
             TruckType: '',
@@ -82,6 +75,10 @@ class Form extends Component {
             unloadAddress: '',    //UnLoading Address
             POCUnloadArr: [],     //UnLoading Address POC
             UnLoadingAddress: [],     //UnLoading Address Array
+            CN: '',                 //Consigner Name
+            CT: '',                 //Consigner Type
+            CP: [],                 //Consigner Phone
+            CA: [],                 //Consigner Address
         }
     }
 
@@ -123,6 +120,8 @@ class Form extends Component {
                 ...this.state,
                 consigners: consigners
             });
+        }, error => {
+            console.error(error)
         });
     }
 
@@ -170,8 +169,7 @@ class Form extends Component {
                 ...this.state,
                 POCLoadArr: [...this.state.POCLoadArr, POCObj]
             });
-        }
-        else {
+        } else {
             this.setState({
                 ...this.state,
                 POCUnloadArr: [...this.state.POCUnloadArr, POCObj]
@@ -245,18 +243,17 @@ class Form extends Component {
 
     // Selection Functions
     onHandleConsignerChange = (e) => {
-        const value = e.target.value;
-        let suggestions = [];
+        let value = e.target.value;
+        let consignersSuggestions = [];
         if (value.length > 0) {
-            const regex = new RegExp(`^${value}`, 'i');
-            suggestions = this.selectConsigner.sort().filter(v => regex.test(v));
+            let regex = new RegExp(`^${value}`, 'i');
+            consignersSuggestions = this.selectConsigner.sort().filter(v => regex.test(v));
         }
         this.setState(() => ({
-                ...this.state,
-                consignersSuggestions: suggestions,
-                consignerText: value
-            }
-        ));
+            ...this.state,
+            consignersSuggestions,
+            consignerText: value
+        }));
     }
     onHandleLaneChange = (e) => {
         const value = e.target.value;
@@ -277,14 +274,32 @@ class Form extends Component {
         let cons = value.split(' ');
         let consName = cons[0];
         let consPhone = cons[cons.length - 1];
+        let CN = null;
+        let CT = null;
+        let CP = null;
+        let CA = null;
         this.state.consigners.map(consigner => {
             let splitName = consigner.Name.split(' ');
-            let Phone = consigner.PhoneNo.indexOf(consPhone);
-            if (splitName === consName && Phone !== -1) {
-                this.consigner = consigner;
+            let Phone = consigner.PhoneNo.toString().indexOf(consPhone);
+            if (splitName[0] === consName && Phone !== -1) {
+                CN = consigner.Name;
+                CT = consigner.Type;
+                CP = consigner.PhoneNo;
+                CA = consigner.Address;
+                return true;
             }
         });
+        this.setState({
+            ...this.state,
+            consignerText: value,
+            consignersSuggestions: [],
+            CN,
+            CA,
+            CT,
+            CP
+        });
     }
+
     suggestionSelected(value) {
         let Sp = null;
         let Ep = null;
@@ -311,7 +326,7 @@ class Form extends Component {
     }
 
     renderConsignerSuggestions() {
-        const {consignersSuggestions} = this.state;
+        let {consignersSuggestions} = this.state;
         if (consignersSuggestions.length === 0) {
             return null;
         }
@@ -322,6 +337,7 @@ class Form extends Component {
             </ul>
         );
     }
+
     renderSuggestions() {
         const {suggestions} = this.state;
         if (suggestions.length === 0) {
@@ -337,7 +353,25 @@ class Form extends Component {
     //Submit Demand Function
     submitDemand = (e) => {
         e.preventDefault();
-        demandService.createDemands({Consigner: this.consigner, Lane: {StartPoint: this.state.startingPoint, EndPoint: this.state.endingPoint, Distance: this.state.distance, Route: this.state.route}, Address: this.address, Item: this.item, Time: this.time, Vehicle: this.vehicle, Freight: this.freight}).then(data=>{
+        demandService.createDemands({
+            Consigner: {
+                Name: this.state.CN,
+                Type: this.state.CT,
+                Address: this.state.CA,
+                PhoneNo: this.state.CP
+            },
+            Lane: {
+                StartPoint: this.state.startingPoint,
+                EndPoint: this.state.endingPoint,
+                Distance: this.state.distance,
+                Route: this.state.route
+            },
+            Address: this.address,
+            Item: this.item,
+            Time: this.time,
+            Vehicle: this.vehicle,
+            Freight: this.freight
+        }).then(data => {
             console.log(data.data.data);
             Swal.fire({
                 title: 'Are you sure?',
@@ -357,7 +391,7 @@ class Form extends Component {
                     });
                 }
             })
-        }).catch(error=>{
+        }).catch(error => {
             console.error(error);
             Swal.fire({
                 icon: 'error',
@@ -368,7 +402,7 @@ class Form extends Component {
     }
 
     render() {
-        const {text} = this.state;
+        const {text, consignerText} = this.state;
         return (
             <div className="Form">
                 {/*Navbar*/}
@@ -423,14 +457,15 @@ class Form extends Component {
                                             </div>
                                         </div>
                                         <div className="input-field some2">
-                                            <input type="text" id="autocomplete-input2" className="autocomplete2"
+                                            <input value={consignerText} type="text" id="autocomplete-input2"
+                                                   className="autocomplete2"
                                                    onChange={this.onHandleConsignerChange} autoComplete="off"/>
                                             <label htmlFor="autocomplete-input2">Select Consigner</label>
                                             {this.renderConsignerSuggestions()}
                                             <div className="buttonFlex">
                                                 <span className="waves-effect waves-light btn">Edit</span>
                                                 <span className="waves-effect waves-light btn modal-trigger"
-                                                   href="#consignerModal">Add</span>
+                                                      href="#consignerModal">Add</span>
                                             </div>
                                         </div>
                                         {/*<div className="input-field"></div>*/}
@@ -476,7 +511,8 @@ class Form extends Component {
                                     </div>
                                     <div className="timingsBody2">
                                         <div className="input-field">
-                                            <input id="TAT" type="number" className="validate" min='0' onChange={this.handleTimeChange}/>
+                                            <input id="TAT" type="number" className="validate" min='0'
+                                                   onChange={this.handleTimeChange}/>
                                             <label htmlFor="TAT">TAT</label>
                                         </div>
                                     </div>
@@ -494,7 +530,7 @@ class Form extends Component {
                                         <div className="loadAddressBody">
                                             <div className="input-field">
                                                 <input id="loadAddress" type="text" className="validate"
-                                                       onChange={this.handleChange} />
+                                                       onChange={this.handleChange}/>
                                                 <label htmlFor="loadAddress">Loading Address</label>
                                             </div>
                                             <div className="addressFlex">
@@ -502,7 +538,7 @@ class Form extends Component {
                                                     <h6>POC</h6>
                                                 </div>
                                                 <span className="waves-effect waves-light btn modal-trigger"
-                                                   href="#modalPOCLoad">Add POC</span>
+                                                      href="#modalPOCLoad">Add POC</span>
                                             </div>
                                             <div className="POCDetails">
                                                 {
@@ -517,7 +553,8 @@ class Form extends Component {
                                                 }
                                             </div>
                                             <div className='POCSubmit'>
-                                                <span className="waves-effect waves-light btn" onClick={this.addStoppage}>Add Stoppage</span>
+                                                <span className="waves-effect waves-light btn"
+                                                      onClick={this.addStoppage}>Add Stoppage</span>
                                             </div>
                                             <div className="POCFooter">
                                                 <div className="footerHeading">
@@ -525,7 +562,7 @@ class Form extends Component {
                                                 </div>
                                                 <div className="footerBody">
                                                     {
-                                                        this.address.LoadingAddress.map(LA=>{
+                                                        this.address.LoadingAddress.map(LA => {
                                                             return (
                                                                 <div className="footerDiv">
                                                                     <span className='loadAddress'>{LA.Address}</span>
@@ -539,7 +576,8 @@ class Form extends Component {
                                         </div>
                                         <div className="unloadAddressBody">
                                             <div className="input-field">
-                                                <input id="unloadAddress" type="text" className="validate" onChange={this.handleChange}/>
+                                                <input id="unloadAddress" type="text" className="validate"
+                                                       onChange={this.handleChange}/>
                                                 <label htmlFor="unloadAddress">Unloading Address</label>
                                             </div>
                                             <div className="addressFlex">
@@ -547,7 +585,7 @@ class Form extends Component {
                                                     <h6>POC</h6>
                                                 </div>
                                                 <span className="waves-effect waves-light btn modal-trigger"
-                                                   href="#modalPOCUnload">Add POC</span>
+                                                      href="#modalPOCUnload">Add POC</span>
                                             </div>
                                             <div className="POCDetails">
                                                 {
@@ -562,7 +600,8 @@ class Form extends Component {
                                                 }
                                             </div>
                                             <div className='POCSubmit'>
-                                                <span className="waves-effect waves-light btn" onClick={this.addStoppage2}>Add Stoppage</span>
+                                                <span className="waves-effect waves-light btn"
+                                                      onClick={this.addStoppage2}>Add Stoppage</span>
                                             </div>
                                             <div className="POCFooter">
                                                 <div className="footerHeading">
@@ -570,7 +609,7 @@ class Form extends Component {
                                                 </div>
                                                 <div className="footerBody">
                                                     {
-                                                        this.address.UnLoadingAddress.map(LA=>{
+                                                        this.address.UnLoadingAddress.map(LA => {
                                                             return (
                                                                 <div className="footerDiv">
                                                                     <span className='loadAddress'>{LA.Address}</span>
@@ -592,43 +631,52 @@ class Form extends Component {
                                     </div>
                                     <div className="vehicleInfo">
                                         <div className="input-field">
-                                            <input type="text" id="vehicleType" className="autocomplete" onChange={this.handleVehicleChange} />
+                                            <input type="text" id="vehicleType" className="autocomplete"
+                                                   onChange={this.handleVehicleChange}/>
                                             <label htmlFor="vehicleType">Vehicle Type</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Height" className="autocomplete2" onChange={this.handleVehicleChange} min='0'/>
+                                            <input type="number" id="Height" className="autocomplete2"
+                                                   onChange={this.handleVehicleChange} min='0'/>
                                             <label htmlFor="Height">Feets</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Tyres" className="autocomplete2" onChange={this.handleVehicleChange} min='0'/>
+                                            <input type="number" id="Tyres" className="autocomplete2"
+                                                   onChange={this.handleVehicleChange} min='0'/>
                                             <label htmlFor="Tyres">Tyres</label>
                                         </div>
                                     </div>
                                     <div className="vehicleInfo">
                                         <div className="input-field">
-                                            <input type="text" id="TruckType" className="autocomplete" onChange={this.handleVehicleChange}/>
+                                            <input type="text" id="TruckType" className="autocomplete"
+                                                   onChange={this.handleVehicleChange}/>
                                             <label htmlFor="TruckType">Vehicle Size</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="text" id="Commodity" className="autocomplete2" onChange={this.handleItemChange}/>
+                                            <input type="text" id="Commodity" className="autocomplete2"
+                                                   onChange={this.handleItemChange}/>
                                             <label htmlFor="Commodity">Item Type</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Tonnage" className="autocomplete2" onChange={this.handleItemChange} min='0'/>
+                                            <input type="number" id="Tonnage" className="autocomplete2"
+                                                   onChange={this.handleItemChange} min='0'/>
                                             <label htmlFor="Tonnage">Tonnage</label>
                                         </div>
                                     </div>
                                     <div className="vehicleInfo">
                                         <div className="input-field">
-                                            <input type="number" id="Amount" className="autocomplete" min='0' onChange={this.handleFreightChange}/>
+                                            <input type="number" id="Amount" className="autocomplete" min='0'
+                                                   onChange={this.handleFreightChange}/>
                                             <label htmlFor="Amount">Freight</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Advance" className="autocomplete2" min='0' onChange={this.handleFreightChange}/>
+                                            <input type="number" id="Advance" className="autocomplete2" min='0'
+                                                   onChange={this.handleFreightChange}/>
                                             <label htmlFor="Advance">Advance</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="number" id="Percentage" className="autocomplete2" min='0' onChange={this.handleFreightChange}/>
+                                            <input type="number" id="Percentage" className="autocomplete2" min='0'
+                                                   onChange={this.handleFreightChange}/>
                                             <label htmlFor="Percentage">Percentage</label>
                                         </div>
                                     </div>
@@ -654,7 +702,7 @@ class Form extends Component {
                                     </div>
                                     <div className="countBody">
                                         <div className="input-field">
-                                            <input id="count" type="number" className="validate" min='1' />
+                                            <input id="count" type="number" className="validate" min='1'/>
                                             <label htmlFor="count">Count</label>
                                         </div>
                                     </div>
