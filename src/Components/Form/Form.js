@@ -13,6 +13,7 @@ import consignerService from "../../Services/consignerService";
 import POCLoadModel from "./Model/POC/POCLoadModel";
 import POCUnloadModel from "./Model/POC/POCUnloadModel";
 import demandService from "../../Services/demandService";
+import Swal from "sweetalert2";
 
 class Form extends Component {
     constructor(props) {
@@ -229,6 +230,12 @@ class Form extends Component {
             [e.target.id]: e.target.value
         }
     }
+    handleTimeChange = (e) => {
+        this.time = {
+            ...this.time,
+            TAT: e.target.value
+        }
+    }
     handleFreightChange = (e) => {
         this.freight = {
             ...this.freight,
@@ -332,8 +339,31 @@ class Form extends Component {
         e.preventDefault();
         demandService.createDemands({Consigner: this.consigner, Lane: {StartPoint: this.state.startingPoint, EndPoint: this.state.endingPoint, Distance: this.state.distance, Route: this.state.route}, Address: this.address, Item: this.item, Time: this.time, Vehicle: this.vehicle, Freight: this.freight}).then(data=>{
             console.log(data.data.data);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Create Demand'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: data.data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
         }).catch(error=>{
             console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!'
+            });
         })
     }
 
@@ -446,7 +476,7 @@ class Form extends Component {
                                     </div>
                                     <div className="timingsBody2">
                                         <div className="input-field">
-                                            <input id="TAT" type="number" className="validate" min='0'/>
+                                            <input id="TAT" type="number" className="validate" min='0' onChange={this.handleTimeChange}/>
                                             <label htmlFor="TAT">TAT</label>
                                         </div>
                                     </div>
