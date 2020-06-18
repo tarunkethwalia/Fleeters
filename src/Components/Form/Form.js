@@ -12,6 +12,7 @@ import moment from 'moment';
 import consignerService from "../../Services/consignerService";
 import POCLoadModel from "./Model/POC/POCLoadModel";
 import POCUnloadModel from "./Model/POC/POCUnloadModel";
+import demandService from "../../Services/demandService";
 
 class Form extends Component {
     constructor(props) {
@@ -21,9 +22,19 @@ class Form extends Component {
         this.addressObj = {
             Address: '',
             POC: []
-        }
+        };
+        this.addressObj2 = {
+            Address: '',
+            POC: []
+        };
 
-        this.consigner = {};
+
+        this.consigner = {
+            Name: 'Tester',
+            Type: 'Enterprise',
+            Address: ['221B Baker Street'],
+            PhoneNo: [1234567890]
+        };
         this.time = {
             IndentTime: '',
             ClosingTime: '',
@@ -33,6 +44,22 @@ class Form extends Component {
         this.address = {
             LoadingAddress: [],
             UnLoadingAddress: []
+        }
+        this.vehicle = {
+            vehicleType : '',
+            Tyres: null,
+            Height: null,
+            TruckType: '',
+            HQ: false
+        }
+        this.item = {
+            Commodity: '',
+            Tonnage: null
+        }
+        this.freight = {
+            Amount: null,
+            Advance: null,
+            Percentage: null
         }
         this.state = {
             suggestions: [],    //selectLane
@@ -44,13 +71,16 @@ class Form extends Component {
             showLaneModel: false,   //Lane Model
             startingPoint: '',    //disabled Lane
             endingPoint: '',    //disabled Lane
-            distance: '',    //disabled Lane
+            distance: '',       //disabled Lane
+            route: '',          //disabled Lane
             lanes: [],  //Lanes
             consigners: [],     // Consigners
             loadAddress: '',    //Loading Address
             POCLoadArr: [],     //Loading Address POC
             LoadingAddress: [],     //Loading Address Array
-            HQ: false
+            unloadAddress: '',    //UnLoading Address
+            POCUnloadArr: [],     //UnLoading Address POC
+            UnLoadingAddress: [],     //UnLoading Address Array
         }
     }
 
@@ -140,6 +170,12 @@ class Form extends Component {
                 POCLoadArr: [...this.state.POCLoadArr, POCObj]
             });
         }
+        else {
+            this.setState({
+                ...this.state,
+                POCUnloadArr: [...this.state.POCUnloadArr, POCObj]
+            });
+        }
     }
     addStoppage = () => {
         this.addressObj = {
@@ -147,6 +183,7 @@ class Form extends Component {
             POC: this.state.POCLoadArr
         };
         this.address = {
+            ...this.address,
             LoadingAddress: [...this.address.LoadingAddress, this.addressObj]
         };
         this.setState({
@@ -156,6 +193,22 @@ class Form extends Component {
         });
         document.getElementById('loadAddress').value = '';
     }
+    addStoppage2 = () => {
+        this.addressObj2 = {
+            Address: this.state.unloadAddress,
+            POC: this.state.POCUnloadArr
+        };
+        this.address = {
+            ...this.address,
+            UnLoadingAddress: [...this.address.UnLoadingAddress, this.addressObj2]
+        };
+        this.setState({
+            ...this.state,
+            UnLoadingAddress: [...this.state.UnLoadingAddress, this.addressObj2],
+            POCUnloadArr: []
+        });
+        document.getElementById('unloadAddress').value = '';
+    }
 
     //Input Functions
     handleChange = (e) => {
@@ -163,6 +216,24 @@ class Form extends Component {
             ...this.state,
             [e.target.id]: e.target.value
         });
+    }
+    handleVehicleChange = (e) => {
+        this.vehicle = {
+            ...this.vehicle,
+            [e.target.id]: e.target.value
+        }
+    }
+    handleItemChange = (e) => {
+        this.item = {
+            ...this.item,
+            [e.target.id]: e.target.value
+        }
+    }
+    handleFreightChange = (e) => {
+        this.freight = {
+            ...this.freight,
+            [e.target.id]: e.target.value
+        }
     }
 
     // Selection Functions
@@ -211,11 +282,13 @@ class Form extends Component {
         let Sp = null;
         let Ep = null;
         let Ds = null;
+        let Rs = null;
         this.state.lanes.map(lane => {
             if (lane.Route === value) {
                 Sp = lane.StartPoint;
                 Ep = lane.EndPoint;
                 Ds = lane.Distance;
+                Rs = lane.Route;
                 return true;
             }
         });
@@ -225,7 +298,8 @@ class Form extends Component {
             suggestions: [],
             startingPoint: Sp,
             endingPoint: Ep,
-            distance: Ds
+            distance: Ds,
+            route: Rs
         }));
     }
 
@@ -253,6 +327,16 @@ class Form extends Component {
         );
     }
 
+    //Submit Demand Function
+    submitDemand = (e) => {
+        e.preventDefault();
+        demandService.createDemands({Consigner: this.consigner, Lane: {StartPoint: this.state.startingPoint, EndPoint: this.state.endingPoint, Distance: this.state.distance, Route: this.state.route}, Address: this.address, Item: this.item, Time: this.time, Vehicle: this.vehicle, Freight: this.freight}).then(data=>{
+            console.log(data.data.data);
+        }).catch(error=>{
+            console.error(error);
+        })
+    }
+
     render() {
         const {text} = this.state;
         return (
@@ -270,7 +354,7 @@ class Form extends Component {
                 <POCLoadModel pocfunction={this.handlePOCDetails}/>
 
                 {/*POC Unload Model*/}
-                <POCUnloadModel/>
+                <POCUnloadModel pocfunction={this.handlePOCDetails}/>
 
                 {/*Wrapper*/}
                 <div className="formFlex">
@@ -282,7 +366,7 @@ class Form extends Component {
 
                     {/*Form Wrapper*/}
                     <div className="formWrapper">
-                        <form>
+                        <form onSubmit={this.submitDemand}>
 
                             {/*Form Heading*/}
                             <div className="formHeading"><h4>Create Demand:</h4></div>
@@ -425,8 +509,8 @@ class Form extends Component {
                                         </div>
                                         <div className="unloadAddressBody">
                                             <div className="input-field">
-                                                <input id="unload-address" type="text" className="validate"/>
-                                                <label htmlFor="unload-address">Unloading Address</label>
+                                                <input id="unloadAddress" type="text" className="validate" onChange={this.handleChange}/>
+                                                <label htmlFor="unloadAddress">Unloading Address</label>
                                             </div>
                                             <div className="addressFlex">
                                                 <div className="addressPOCHeading">
@@ -436,109 +520,86 @@ class Form extends Component {
                                                    href="#modalPOCUnload">Add POC</a>
                                             </div>
                                             <div className="POCDetails">
-                                                <div className="POCDiv">
-                                                    <span className='POCName'>Amit Singh</span>
-                                                    <span>9871917358</span>
-                                                </div>
-                                                <div className="POCDiv">
-                                                    <span className='POCName'>Amit Singh</span>
-                                                    <span>9871917358</span>
-                                                </div>
-                                                <div className="POCDiv">
-                                                    <span className='POCName'>Amit Singh</span>
-                                                    <span>9871917358</span>
-                                                </div>
-                                                <div className="POCDiv">
-                                                    <span className='POCName'>Amit Singh</span>
-                                                    <span>9871917358</span>
-                                                </div>
-                                                <div className="POCDiv">
-                                                    <span className='POCName'>Amit Singh</span>
-                                                    <span>9871917358</span>
-                                                </div>
-                                                <div className="POCDiv">
-                                                    <span className='POCName'>Amit Singh</span>
-                                                    <span>9871917358</span>
-                                                </div>
+                                                {
+                                                    this.state.POCUnloadArr.map(poc => {
+                                                        return (
+                                                            <div className="POCDiv">
+                                                                <span className='POCName'>{poc.Name}</span>
+                                                                <span>{poc.PhoneNo[0]}</span>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
                                             </div>
                                             <div className='POCSubmit'>
-                                                <span className="waves-effect waves-light btn">Add Stoppage</span>
+                                                <span className="waves-effect waves-light btn" onClick={this.addStoppage2}>Add Stoppage</span>
                                             </div>
                                             <div className="POCFooter">
                                                 <div className="footerHeading">
                                                     <h6>Unloading</h6>
                                                 </div>
                                                 <div className="footerBody">
-                                                    <div className="footerDiv">
-                                                        <span className='loadAddress'>Some Dummy address with some dummy data</span>
-                                                        <Link to='/'>View</Link>
-                                                    </div>
-                                                    <div className="footerDiv">
-                                                        <span className='loadAddress'>Some Dummy address with some dummy data</span>
-                                                        <Link to='/'>View</Link>
-                                                    </div>
-                                                    <div className="footerDiv">
-                                                        <span className='loadAddress'>Some Dummy address with some dummy data</span>
-                                                        <Link to='/'>View</Link>
-                                                    </div>
-                                                    <div className="footerDiv">
-                                                        <span className='loadAddress'>Some Dummy address with some dummy data</span>
-                                                        <Link to='/'>View</Link>
-                                                    </div>
-                                                    <div className="footerDiv">
-                                                        <span className='loadAddress'>Some Dummy address with some dummy data</span>
-                                                        <Link to='/'>View</Link>
-                                                    </div>
+                                                    {
+                                                        this.address.UnLoadingAddress.map(LA=>{
+                                                            return (
+                                                                <div className="footerDiv">
+                                                                    <span className='loadAddress'>{LA.Address}</span>
+                                                                    <Link to='/'>View</Link>
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
+                                {/*Vehicle Details*/}
                                 <div className="demandVehicle">
                                     <div className="vehicleHeading">
                                         <h5>Vehicle</h5>
                                     </div>
                                     <div className="vehicleInfo">
                                         <div className="input-field">
-                                            <input type="text" id="vehicle-type" className="autocomplete"/>
-                                            <label htmlFor="vehicle-type">Vehicle Type</label>
+                                            <input type="text" id="vehicleType" className="autocomplete" onChange={this.handleVehicleChange} />
+                                            <label htmlFor="vehicleType">Vehicle Type</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="text" id="feets" className="autocomplete2"/>
-                                            <label htmlFor="feets">Feets</label>
+                                            <input type="number" id="Height" className="autocomplete2" onChange={this.handleVehicleChange} min='0'/>
+                                            <label htmlFor="Height">Feets</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="text" id="tyres" className="autocomplete2"/>
-                                            <label htmlFor="tyres">Tyres</label>
-                                        </div>
-                                    </div>
-                                    <div className="vehicleInfo">
-                                        <div className="input-field">
-                                            <input type="text" id="vehicle-size" className="autocomplete"/>
-                                            <label htmlFor="vehicle-size">Vehicle Size</label>
-                                        </div>
-                                        <div className="input-field">
-                                            <input type="text" id="item-type" className="autocomplete2"/>
-                                            <label htmlFor="item-type">Item Type</label>
-                                        </div>
-                                        <div className="input-field">
-                                            <input type="text" id="tonnage" className="autocomplete2"/>
-                                            <label htmlFor="tonnage">Tonnage</label>
+                                            <input type="number" id="Tyres" className="autocomplete2" onChange={this.handleVehicleChange} min='0'/>
+                                            <label htmlFor="Tyres">Tyres</label>
                                         </div>
                                     </div>
                                     <div className="vehicleInfo">
                                         <div className="input-field">
-                                            <input type="text" id="freight" className="autocomplete"/>
-                                            <label htmlFor="freight">Freight</label>
+                                            <input type="text" id="TruckType" className="autocomplete" onChange={this.handleVehicleChange}/>
+                                            <label htmlFor="TruckType">Vehicle Size</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="text" id="advance" className="autocomplete2"/>
-                                            <label htmlFor="advance">Advance</label>
+                                            <input type="text" id="Commodity" className="autocomplete2" onChange={this.handleItemChange}/>
+                                            <label htmlFor="Commodity">Item Type</label>
                                         </div>
                                         <div className="input-field">
-                                            <input type="text" id="percentage" className="autocomplete2"/>
-                                            <label htmlFor="percentage">Percentage</label>
+                                            <input type="number" id="Tonnage" className="autocomplete2" onChange={this.handleItemChange} min='0'/>
+                                            <label htmlFor="Tonnage">Tonnage</label>
+                                        </div>
+                                    </div>
+                                    <div className="vehicleInfo">
+                                        <div className="input-field">
+                                            <input type="number" id="Amount" className="autocomplete" min='0' onChange={this.handleFreightChange}/>
+                                            <label htmlFor="Amount">Freight</label>
+                                        </div>
+                                        <div className="input-field">
+                                            <input type="number" id="Advance" className="autocomplete2" min='0' onChange={this.handleFreightChange}/>
+                                            <label htmlFor="Advance">Advance</label>
+                                        </div>
+                                        <div className="input-field">
+                                            <input type="number" id="Percentage" className="autocomplete2" min='0' onChange={this.handleFreightChange}/>
+                                            <label htmlFor="Percentage">Percentage</label>
                                         </div>
                                     </div>
                                     <div className="vehicleInfo">
@@ -548,7 +609,7 @@ class Form extends Component {
                                                 <label>
                                                     No
                                                     <input type="checkbox" onClick={() => {
-                                                        this.setState({...this.state, HQ: !this.state.HQ})
+                                                        this.vehicle = {...this.vehicle, HQ: !this.vehicle.HQ}
                                                     }}/>
                                                     <span className="lever"></span>
                                                     Yes

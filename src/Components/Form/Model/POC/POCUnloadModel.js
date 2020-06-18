@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import "./POCUnloadModel.css";
+import $ from 'jquery';
 
 class POCUnloadModel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            POCName: '',
-            POCPhone: '',
-            POCPhoneArr: []
+            POCNameUA: '',
+            POCPhoneUA: '',
+            POCPhoneArrUA: []
         }
     }
 
@@ -19,68 +20,53 @@ class POCUnloadModel extends Component {
 
     handlePOCArray = () => {
         let PPArr = [];
-        PPArr.push(...this.state.POCPhoneArr, this.state.POCPhone);
+        PPArr.push(...this.state.POCPhoneArrUA, this.state.POCPhoneUA);
         this.setState({
             ...this.state,
-            POCPhoneArr: PPArr
+            POCPhoneArrUA: PPArr
         });
-        document.getElementById('POCPhone').value = '';
+        document.getElementById('POCPhoneUA').value = '';
     }
 
     handleSubmit = () => {
-        this.props.pocfunction({Name: this.state.POCName, PhoneNo: this.state.POCPhoneArr});
+        this.props.pocfunction({Name: this.state.POCNameUA, PhoneNo: this.state.POCPhoneArrUA}, 2);
         this.setState({
             ...this.state,
-            POCPhoneArr: []
+            POCPhoneArrUA: []
         });
-        this.props.onHide();
+        document.getElementById('POCNameUA').value = '';
+        $('.modal-overlay').click();
     }
 
     render() {
         return (
-            // <Modal
-            //     {...this.props}
-            //     show={this.props.show}
-            //     size="xl"
-            //     // onHide={() => setShow(false)}
-            //     dialogClassName="modal-90w"
-            //     className="modelAlbum"
-            // >
-            //     <div className="POCWrapper">
-            //         <div className="input-field some">
-            //             <input type="text" id="POCName" className="POCName"
-            //                    onChange={this.addingPOCData}/>
-            //             <label htmlFor="POCName">POC Name:</label>
-            //         </div>
-            //         <div className="input-field some">
-            //             <input type="number" id="POCPhone" className="POCPhone" id='POCPhone'
-            //                    onChange={this.addingPOCData}/>
-            //             <label htmlFor="POCPhone">Phone No:</label>
-            //             <div className="buttonFlex">
-            //                 <button className="btn" onClick={this.handlePOCArray}>Add Phone</button>
-            //             </div>
-            //         </div>
-            //         <div className="POCSubmitBtn">
-            //             <button onClick={this.handleSubmit}>Add POC</button>
-            //         </div>
-            //     </div>
-            //     <div className="showPhone">
-            //         {
-            //             this.state.POCPhoneArr.map(Phone=>{
-            //                 return (
-            //                     <p>{Phone}</p>
-            //                 )
-            //             })
-            //         }
-            //     </div>
-            // </Modal>
             <div id="modalPOCUnload" className="modal modal-fixed-footer">
-                <div className="modal-content">
-                    <h4>Modal Header</h4>
-                    <p>A bunch of text</p>
+                <div className="POCWrapper">
+                    <div className="input-field some">
+                        <input type="text" id="POCNameUA" className="POCNameUA"
+                               onChange={this.addingPOCData}/>
+                        <label htmlFor="POCNameUA">POC Name:</label>
+                    </div>
+                    <div className="input-field some">
+                        <input type="number" id="POCPhoneUA" className="POCPhoneUA"
+                               onChange={this.addingPOCData}/>
+                        <label htmlFor="POCPhoneUA">Phone No:</label>
+                        <div className="buttonFlex">
+                            <span className="btn" onClick={this.handlePOCArray}>Add Phone</span>
+                        </div>
+                    </div>
+                    <div className="POCSubmitBtn">
+                        <button className='btn' onClick={this.handleSubmit}>Add POC</button>
+                    </div>
                 </div>
-                <div className="modal-footer">
-                    <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
+                <div className="showPhone">
+                    {
+                        this.state.POCPhoneArrUA.map(Phone => {
+                            return (
+                                <p>{Phone}</p>
+                            )
+                        })
+                    }
                 </div>
             </div>
         );
