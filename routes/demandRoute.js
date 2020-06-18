@@ -14,6 +14,16 @@ router.put('/:demandId/changeDemandStatus', async (req, res) => {
 });
 
 
+router.get('/getActiveDemands', async (req, res) => {
+    try {
+        let ctx = await demandController.getActiveDemands();
+        ctx(req, res);
+    } catch (e) {
+        console.log('Route is catching error', e);
+        res.status(500).json(e);
+    }
+});
+
 router.get('/activeDemands', async (req, res) => {
     try {
         let ctx = await demandController.activeDemands(req.body.startDate,req.body.endDate);

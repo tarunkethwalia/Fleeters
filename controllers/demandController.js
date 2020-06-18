@@ -75,9 +75,17 @@ exports.changeDemandStatus = async (demandId, status, reason) => {
     }
 }
 
+exports.getActiveDemands = async () => {
+    try {
+        let demands = await Demands.find({"demandStatus.status": "Active"});
+        return response.Ok(demands);
+    } catch (e) {
+        return response.BadRequest(e);
+    }
+};
+
 exports.activeDemands = async (startDate,endDate) => {
     try {
-
         let demands = await Demands.find({ $and:[{"demandStatus.status": "Active"},{"Time.IndentTime":{$gte:startDate}},{"Time.IndentTime":{$lte:endDate}}]});
         return response.Ok(demands);
     } catch (e) {
