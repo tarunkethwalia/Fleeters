@@ -4,9 +4,17 @@
 .POCWrapper h4{font-size: 22px; font-family: 'Titillium Web', sans-serif;}
 .load-modal-info{display: flex; justify-content: center; flex-direction: column; width: 100%; padding-left: 25px; padding-top: 10px;}
 .some {margin: 5px; padding-bottom:10px; width: 78%;}
-/*.showphone{overflow-y: scroll; height: 5px; background-color: green}*/
+.showPhone{overflow-y: auto; height: 90px;}
+.showPhone p {width: 100%; height: 30px; margin: 0; font-size: 12px;}
 .loadPOC{padding-top: 10px;}
-.POCSubmitBtn{padding-top: 25%; padding-left: 33%;}
-.POCSubmitBtn .btn{background-color: #49BAA6; color: white;height: 35px; font-size: 13px; text-transform: capitalize; }
+.POCSubmitBtn{ padding: 10px 0 !important; display: flex;}
+.POCSubmitBtn .btn{background-color: #49BAA6; color: white;height: 35px; font-size: 13px; text-transform: capitalize; margin: auto;}
 .POCSubmitBtn .btn:hover {color: white;}
 .POCSubmitBtn.btn:focus {outline: none;}
+
+
+/*Scroll Design*/
+.showPhone::-webkit-scrollbar-track {}
+.showPhone::-webkit-scrollbar-thumb { background-image: linear-gradient(to bottom, #49BAA6, #408E82); border-radius: 10px; }
+.showPhone::-webkit-scrollbar { width: 5px;}
+.showPhone::-webkit-scrollbar-thumb:hover { background-image: linear-gradient(to bottom, #49BAA6, #408E82); }
