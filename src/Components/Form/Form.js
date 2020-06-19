@@ -76,10 +76,8 @@ class Form extends Component {
             distance: '',       //disabled Lane
             route: '',          //disabled Lane
             loadAddress: '',    //Loading Address
-            POCLoadArr: [],     //Loading Address POC
             LoadingAddress: [],     //Loading Address Array
             unloadAddress: '',    //UnLoading Address
-            POCUnloadArr: [],     //UnLoading Address POC
             UnLoadingAddress: [],     //UnLoading Address Array
         }
     }
@@ -131,7 +129,7 @@ class Form extends Component {
     // Date Function
     handleDateChange = (value, id) => {
         if (id === 'indentTime') {
-            let times = moment.utc(value).format();
+            let times = moment.utc(value).local().format();
             store.dispatch({type: 'INDENT_TIME', indentTime: times});
             let indent = store.getState().time.indentTime;
             this.time = {
@@ -139,7 +137,7 @@ class Form extends Component {
                 IndentTime: indent
             }
         } else if (id === 'closingTime') {
-            let times = moment.utc(value).format();
+            let times = moment.utc(value).local().format();
             store.dispatch({type: 'CLOSING_TIME', closingTime: times});
             let closing = store.getState().time.closingTime;
             this.time = {
@@ -147,7 +145,7 @@ class Form extends Component {
                 ClosingTime: closing
             }
         } else {
-            let times = moment.utc(value).format();
+            let times = moment.utc(value).local().format();
             store.dispatch({type: 'LOADING_TIME', loadingTime: times});
             let loading = store.getState().time.loadingTime;
             this.time = {
@@ -191,22 +189,23 @@ class Form extends Component {
 
     //Address Functions
     handlePOCDetails = (POCObj, id) => {
+        console.log(POCObj);
         if (id === 1) {
-            this.setState({
-                ...this.state,
-                POCLoadArr: [...this.state.POCLoadArr, POCObj]
-            });
+            this.addressObj = {
+                ...this.addressObj,
+                POC: [...this.addressObj.POC, POCObj]
+            }
         } else {
-            this.setState({
-                ...this.state,
-                POCUnloadArr: [...this.state.POCUnloadArr, POCObj]
-            });
+            this.addressObj2 = {
+                ...this.addressObj2,
+                POC: [...this.addressObj2.POC, POCObj]
+            }
         }
     }
     addStoppage = () => {
         this.addressObj = {
+            ...this.addressObj,
             Address: this.state.loadAddress,
-            POC: this.state.POCLoadArr
         };
         this.address = {
             ...this.address,
@@ -215,14 +214,17 @@ class Form extends Component {
         this.setState({
             ...this.state,
             LoadingAddress: [...this.state.LoadingAddress, this.addressObj],
-            POCLoadArr: []
         });
+        this.addressObj = {
+            Address: '',
+            POC: []
+        };
         document.getElementById('loadAddress').value = '';
     }
     addStoppage2 = () => {
         this.addressObj2 = {
+            ...this.addressObj2,
             Address: this.state.unloadAddress,
-            POC: this.state.POCUnloadArr
         };
         this.address = {
             ...this.address,
@@ -231,8 +233,11 @@ class Form extends Component {
         this.setState({
             ...this.state,
             UnLoadingAddress: [...this.state.UnLoadingAddress, this.addressObj2],
-            POCUnloadArr: []
         });
+        this.addressObj2 = {
+            Address: '',
+            POC: []
+        };
         document.getElementById('unloadAddress').value = '';
     }
 
@@ -568,7 +573,7 @@ class Form extends Component {
                                             </div>
                                             <div className="POCDetails">
                                                 {
-                                                    this.state.POCLoadArr.map(poc => {
+                                                    this.addressObj.POC.map(poc => {
                                                         return (
                                                             <div className="POCDiv">
                                                                 <span className='POCName'>{poc.Name}</span>
@@ -617,7 +622,7 @@ class Form extends Component {
                                             </div>
                                             <div className="POCDetails">
                                                 {
-                                                    this.state.POCUnloadArr.map(poc => {
+                                                    this.addressObj2.POC.map(poc => {
                                                         return (
                                                             <div className="POCDiv">
                                                                 <span className='POCName'>{poc.Name}</span>

@@ -36,7 +36,7 @@ class POCUnloadModel extends Component {
             POCPhoneArrUA: []
         });
         document.getElementById('POCNameUA').value = '';
-        $('.modal-overlay').click();
+        this.props.onHide();
     }
 
     render() {
@@ -50,7 +50,6 @@ class POCUnloadModel extends Component {
                 className="modelLane"
             >
                 <div id="modalPOCUnload" className="POCWrapper">
-                    <form onSubmit={this.handleSubmit}>
                         <h4 className='unloadModelHead'>Unloading POC</h4>
                         <div className="unload-modal-info">
                     <div className="input-field some">
@@ -77,9 +76,8 @@ class POCUnloadModel extends Component {
                             </div>
                         </div>
                     <div className="POCSubmitBtn">
-                        <button className='btn'>Add POC</button>
+                        <button className='btn' onClick={this.handleSubmit}>Add POC</button>
                     </div>
-                    </form>
                 </div>
             </Modal>
         );

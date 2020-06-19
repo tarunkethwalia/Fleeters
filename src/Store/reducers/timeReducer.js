@@ -1,6 +1,6 @@
 import moment from "moment";
 
-let times = moment.utc(new Date()).format()
+let times = moment.utc(new Date()).local().format()
 const initState = {
     indentTime : times,
     closingTime: times,
