@@ -109,7 +109,8 @@ class Form extends Component {
             console.error(error);
         });
         consignerService.getConsigners().then(data => {
-            const consignors = data.data.data;
+            store.dispatch({type: 'CONSIGNOR_DATA', consignors: data.data.data});
+            const consignors = store.getState().consignor.consignors;
             const consignorsArr = [];
             consignors.map(consignor => {
                 let consignorName = consignor.Name;
@@ -173,6 +174,20 @@ class Form extends Component {
         this.setState({
             ...this.state,
             lanes: lanes
+        });
+    }
+    updateConsignor = (consignors) => {
+        const consignorsArr = [];
+        consignors.map(consignor => {
+            let consignorName = consignor.Name;
+            let consignorNumber = consignor.PhoneNo[0];
+            let consignorDetails = consignorName + ' - ' + consignorNumber;
+            consignorsArr.push(consignorDetails);
+        });
+        this.selectConsignor = consignorsArr;
+        this.setState({
+            ...this.state,
+            consignors: consignors
         });
     }
     hideConsignerModel = () => {
@@ -447,7 +462,7 @@ class Form extends Component {
                            updateLanes={this.updateLanes}/>
 
                 {/*Consignor Model*/}
-                <ConsignerModel show={this.state.showConsignerModel} onHide={() => this.hideConsignerModel()}/>
+                <ConsignerModel show={this.state.showConsignerModel} onHide={() => this.hideConsignerModel()} updateConsignor={this.updateConsignor}/>
 
                 {/*POC Load Model*/}
                 <POCLoadModel pocfunction={this.handlePOCDetails} show={this.state.showPOCLoadModel}
@@ -672,15 +687,24 @@ class Form extends Component {
                                         <h5>Vehicle</h5>
                                     </div>
                                     <div className="vehicleInfo">
+                                        {/*<div className="input-field">*/}
+                                        {/*    <input type="text" id="vehicleType" className="autocomplete"*/}
+                                        {/*           onChange={this.handleVehicleChange}/>*/}
+                                        {/*    <label htmlFor="vehicleType">Vehicle Type</label>*/}
+                                        {/*</div>*/}
                                         <div className="input-field">
-                                            <input type="text" id="vehicleType" className="autocomplete"
-                                                   onChange={this.handleVehicleChange}/>
-                                            <label htmlFor="vehicleType">Vehicle Type</label>
+                                            <select onChange={this.handleVehicleChange} id="vehicleType">
+                                                <option value="" disabled selected>Choose Vehicle Type</option>
+                                                <option value="Open">Open</option>
+                                                <option value="Container">Container</option>
+                                                <option value="Trailer">Trailer</option>
+                                            </select>
+                                            <label>Vehicle Type</label>
                                         </div>
                                         <div className="input-field">
                                             <input type="number" id="Height" className="autocomplete2"
                                                    onChange={this.handleVehicleChange} min='0'/>
-                                            <label htmlFor="Height">Feets</label>
+                                            <label htmlFor="Height">Vehicle Size</label>
                                         </div>
                                         <div className="input-field">
                                             <input type="number" id="Tyres" className="autocomplete2"
@@ -695,13 +719,13 @@ class Form extends Component {
                                         {/*    <label htmlFor="TruckType">Vehicle Size</label>*/}
                                         {/*</div>*/}
                                         <div className="input-field">
-                                            <select onChange={this.handleVehicleChange}>
-                                                <option value="" disabled selected>Choose your option</option>
+                                            <select onChange={this.handleVehicleChange} id="TruckType">
+                                                <option value="" disabled selected>Choose Truck Type</option>
                                                 <option value="SXL">SXL</option>
                                                 <option value="MXL">MXL</option>
                                                 <option value="HXL">HXL</option>
                                             </select>
-                                            <label>Vehicle Size</label>
+                                            <label>Truck Type</label>
                                         </div>
                                         <div className="input-field">
                                             <input type="text" id="Commodity" className="autocomplete2"

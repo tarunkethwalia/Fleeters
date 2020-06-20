@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import "./ConsignerModel.css";
 import consignerService from "../../../../Services/consignerService";
 import {Modal} from "react-bootstrap";
+import Swal from "sweetalert2";
+import store from "../../../../Store/stores/store";
 
 class ConsignerModel extends Component {
     constructor(props) {
@@ -25,8 +27,34 @@ class ConsignerModel extends Component {
             Address: this.state.addressArr
         }).then(data => {
             console.log(data.data.message);
+            Swal.fire({
+                icon: 'success',
+                title: data.data.message,
+                showConfirmButton: false,
+                timer: 1500
+            });
+            this.setState({
+                type: '',
+                name: '',
+                phoneNo: null,
+                phoneArr: [],
+                address: null,
+                addressArr: []
+            });
+            consignerService.getConsigners().then(data => {
+                store.dispatch({type: 'CONSIGNOR_DATA', consignors: data.data.data});
+                this.props.updateConsignor(data.data.data);
+            },error=> {
+                console.error(error)
+            });
+            this.props.onHide();
         }).catch(error => {
             console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!'
+            });
         })
     }
 
@@ -60,7 +88,7 @@ class ConsignerModel extends Component {
                 show={this.props.show}
                 size="lg"
                 // onHide={() => setShow(false)}
-                dialogClassName="modal-content"
+                dialogClassName="modal-content2"
                 className="modelConsigner"
             >
                 <div id="modalConsigner" className="consignerWrapper">

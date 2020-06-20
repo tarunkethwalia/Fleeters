@@ -1,8 +1,8 @@
 .modelConsigner { margin-top: 70px; display: flex; background-color: white; overflow: hidden!important; width: 35%; border-radius: 10px; height: 100% !important;}
-.modal-content{margin-top: 15px;margin-left: 5px; padding:0px!important; border: none; height: 100%;}
-.consignerWrapper{height: 100%; width: 100%; display: flex;flex-direction: column;padding-left: 10px;}
-.consignerWrapper h4{font-size: 22px; font-family: 'Titillium Web', sans-serif; margin-top: 10px;}
-.consigner-modal-info{display: flex; justify-content: center; flex-direction: column; width: 105%; padding-left: 10px; padding-right: 10px; padding-top: 10px;}
+.modal-content2{ padding:0px!important; border: none; height: 100%; margin: 0 !important;}
+.consignerWrapper{height: 100%; width: 100%; display: flex;flex-direction: column;}
+.consignerWrapper h4{font-size: 22px; font-family: 'Titillium Web', sans-serif; margin: 10px 20px;}
+.consigner-modal-info{display: flex; justify-content: center; flex-direction: column; width: 100%; margin-left: 20px !important;}
 .firstInput{display: flex; width: 90%;margin-bottom: 10px;margin-top: 10px;}
 .secondInput{display: flex; width: 90%;}
 .some {margin: 5px; padding-bottom:10px; width: 78%;}
@@ -10,14 +10,14 @@
 .conAddress{margin: 5px; padding-bottom:10px; width: 87%; margin-left: 20px;}
 .consignerPhone{margin-top: 15px;}
 .consignerAddress{margin-top: 15px;}
-.consignerScroll{display: flex; justify-content: flex-start; width: 100%; margin-top: 5px;}
-.showPhone2{overflow-y: auto; height: 90px; width: 43%;margin-right: 3%; }
+.consignerScroll{display: flex; justify-content: flex-start; width: 100%; margin: 5px 0 0 10px;}
+.showPhone2{overflow-y: auto; height: 90px; width: 42%;margin-right: 3%;}
 .showAddress{overflow-y: auto; height: 90px; width: 46%;}
 .showPhone2 p {width: 100%; height: 30px; margin: 0; font-size: 12px;}
 .showPhone2 p::before, .showAddress p::before { content: "\2022"; color: #49BAA6; font-weight: bold; display: inline-block; width: 1em; margin-left: 1em;}
 .showAddress p {width: 100%; height: 30px; margin: 0; font-size: 12px;}
 /*.loadPOC{padding-top: 10px;}*/
-.consignerSubmitBtn{ padding: 10px 0 !important; display: flex; margin-right: 30px; margin-top: 20px;}
+.consignerSubmitBtn{ padding: 10px 0 !important; display: flex;}
 .consignerSubmitBtn .btn{background-color: #49BAA6; color: white;height: 35px; font-size: 13px; text-transform: capitalize; margin: auto;}
 .consignerubmitBtn .btn:hover {color: white;}
 .consignerSubmitBtn.btn:focus {outline: none;}
