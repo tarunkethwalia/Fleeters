@@ -51,7 +51,7 @@ class Placement extends Component {
                                 <div className="placementContent">
                                     <div className="cardWrapper">
                                         {
-                                            demands && demands.map(demand=>{
+                                            demands && demands.reverse().map(demand=>{
                                                 return(
                                                     <div className="cardBox" key={demand._id}>
                                                         <div className="consigner">
@@ -61,6 +61,10 @@ class Placement extends Component {
                                                         <div className="lane">
                                                             <h4>{demand.Lane.StartPoint+' - '+demand.Lane.EndPoint}</h4>
                                                             <span>{demand.Lane.Distance+' Km'}</span>
+                                                        </div>
+                                                        <div className="indentTime">
+                                                            <h4>Indent Time</h4>
+                                                            <span>{demand.Time.IndentTime}</span>
                                                         </div>
                                                         <div className="vehicle">
                                                             <h4>Vehicle</h4>
