@@ -69,6 +69,7 @@ class Form extends Component {
             CP: [],              //Consignor PhoneNo
             CA: [],              //Consignor Address
             showLaneModel: false,   //Lane Model
+            showConsignerModel: false,   //Consigner Model
             showPOCLoadModel: false, //POC Load Model
             showPOCUnloadModel: false, //POC Unload Model
             startingPoint: '',    //disabled Lane
@@ -174,6 +175,12 @@ class Form extends Component {
             lanes: lanes
         });
     }
+    hideConsignerModel = () => {
+        this.setState({
+            ...this.state,
+            showConsignerModel: false
+        });
+    };
     hidePOCLoadModel = () => {
         this.setState({
             ...this.state,
@@ -440,7 +447,7 @@ class Form extends Component {
                            updateLanes={this.updateLanes}/>
 
                 {/*Consignor Model*/}
-                <ConsignerModel/>
+                <ConsignerModel show={this.state.showConsignerModel} onHide={() => this.hideConsignerModel()}/>
 
                 {/*POC Load Model*/}
                 <POCLoadModel pocfunction={this.handlePOCDetails} show={this.state.showPOCLoadModel}
@@ -493,8 +500,10 @@ class Form extends Component {
                                             {this.renderConsignorSuggestions()}
                                             <div className="buttonFlex">
                                                 <span className="waves-effect waves-light btn">Edit</span>
-                                                <span className="waves-effect waves-light btn modal-trigger"
-                                                      href="#consignerModal">Add</span>
+                                                <span className="btn" onClick={() => {
+                                                    this.setState({...this.state, showConsignerModel: true})
+                                                }}> Add
+                                                </span>
                                             </div>
                                         </div>
                                         {/*<div className="input-field"></div>*/}
