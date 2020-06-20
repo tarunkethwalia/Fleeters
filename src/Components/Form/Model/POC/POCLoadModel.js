@@ -64,7 +64,7 @@ class POCLoadModel extends Component {
                                     <span className="btn" onClick={this.handlePOCArray}>Add Phone</span>
                                 </div>
                             </div>
-                            <div className="showPhone">
+                            <div className="showPhoneNo">
                                 {
                                     this.state.POCPhoneArr.map(Phone => {
                                         return (

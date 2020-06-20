@@ -680,10 +680,19 @@ class Form extends Component {
                                         </div>
                                     </div>
                                     <div className="vehicleInfo">
+                                        {/*<div className="input-field">*/}
+                                        {/*    <input type="text" id="TruckType" className="autocomplete"*/}
+                                        {/*           onChange={this.handleVehicleChange}/>*/}
+                                        {/*    <label htmlFor="TruckType">Vehicle Size</label>*/}
+                                        {/*</div>*/}
                                         <div className="input-field">
-                                            <input type="text" id="TruckType" className="autocomplete"
-                                                   onChange={this.handleVehicleChange}/>
-                                            <label htmlFor="TruckType">Vehicle Size</label>
+                                            <select onChange={this.handleVehicleChange}>
+                                                <option value="" disabled selected>Choose your option</option>
+                                                <option value="SXL">SXL</option>
+                                                <option value="MXL">MXL</option>
+                                                <option value="HXL">HXL</option>
+                                            </select>
+                                            <label>Vehicle Size</label>
                                         </div>
                                         <div className="input-field">
                                             <input type="text" id="Commodity" className="autocomplete2"
