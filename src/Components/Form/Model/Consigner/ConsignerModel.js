@@ -61,22 +61,25 @@ class ConsignerModel extends Component {
                 size="lg"
                 // onHide={() => setShow(false)}
                 dialogClassName="modal-content"
-                className="modelLane"
+                className="modelConsigner"
             >
                 <div id="modalConsigner" className="consignerWrapper">
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.addConsigner}>
                         <h4 className='consignerModelHead'>Consigner</h4>
                         <div className="consigner-modal-info">
+                            <div className="firstInput">
                             <div className="input-field some">
                                 <input type="text" id="name" className="name"
                                        onChange={this.handleConsigner}/>
                                 <label htmlFor="name">Name:</label>
                             </div>
-                            <div className="input-field some">
+                            <div className="input-field conType">
                                 <input type="text" id="type" className="type"
                                        onChange={this.handleConsigner}/>
                                 <label htmlFor="type">Type:</label>
                             </div>
+                            </div>
+                            <div className="secondInput">
                             <div className="input-field some">
                                 <input type="number" id="phoneNo" className="phoneNo"
                                        onChange={this.handleConsigner}/>
@@ -85,16 +88,18 @@ class ConsignerModel extends Component {
                                     <span className="btn" onClick={this.handlePhone}>Add Phone</span>
                                 </div>
                             </div>
-                            <div className="input-field some">
-                                <input type="number" id="address" className="address"
+                            <div className="input-field conAddress">
+                                <input type="text" id="address" className="address"
                                        onChange={this.handleConsigner}/>
                                 <label htmlFor="address">Address:</label>
                                 <div className="buttonFlex consignerAddress">
                                     <span className="btn" onClick={this.handleAddress}>Add Address</span>
                                 </div>
                             </div>
+                            </div>
                         </div>
-                        <div className="showPhone">
+                        <div className="consignerScroll">
+                        <div className="showPhone2">
                             {
                                 this.state.phoneArr.map(Phone => {
                                     return (
@@ -105,12 +110,13 @@ class ConsignerModel extends Component {
                         </div>
                         <div className="showAddress">
                             {
-                                this.state.addressArr.map(Phone => {
+                                this.state.addressArr.map(Address => {
                                     return (
-                                        <p>{Phone}</p>
+                                        <p>{Address}</p>
                                     )
                                 })
                             }
+                        </div>
                         </div>
                 <div className="consignerSubmitBtn">
                     <button className='btn'>Submit</button>
